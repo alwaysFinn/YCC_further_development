@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.youngtvjobs.ycc.rental.studyroomMapper">
+
+	  <!-- 새로운 sql문 new version -->	  
+	  <select id="studyroomRentalChk" resultType="StudyroomDto">
+	  	select sroom_seat_id, user_id 
+		from studyroom
+		where sroom_rental_etime <![CDATA[ > ]]> now()
+	  </select>
+	  
+	  <insert id="insertRentalInfo" parameterType="StudyroomDto">
+	  	INSERT INTO studyroom
+		(sroom_seat_id, sroom_rental_stime, sroom_rental_etime, user_id)
+		VALUES(#{sroom_seat_id}, now(), #{sroom_rental_etime}, #{user_id})
+	  </insert>	  
+	  
+	  <!-- for 유효성 체크#1 예약되어있는지 확인 -->
+	  <select id="rentalChk" parameterType="StudyroomDto" resultType="int">
+	    select count(*)
+		from studyroom
+		where sroom_rental_etime <![CDATA[ > ]]> now()
+		and user_id = #{user_id}
+	  </select>
+  </mapper>
