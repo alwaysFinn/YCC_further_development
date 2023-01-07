@@ -1,159 +1,49 @@
+/*
+ * 작성자 : alwaysFinn(김지호)
+ * 최초 작성일 : '23.01.06
+ * 마지막 업데이트 : '23.01.06
+ * 업데이트 내용 : dto 생성 및 컬럼들 추가
+ */
+
 package com.youngtvjobs.ycc.club;
 
 import java.util.Date;
-import java.util.Objects;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClubDto {
-
-	//club
-	private Integer club_id;
-	private String club_title;
-	private Date club_create_time;
-	private String club_info;
-	private String club_master_id;
-	private int count;
 	
-	//club_board
-	private Integer club_article_id;
-	private String club_article_title;
-	private Date club_board_upload_time;
-	private Integer club_article_cnt;
-	private String user_id;
+	private int club_id;	//동아리 번호
+	private String club_title;	//동아리 이름
+	private String club_create_time;	//동아리 생성 날짜
+	private String club_info;	//동아리 설명
+	private String club_master_id;	//동아리장 아이디
+	private int club_member;	//동아리 멤버 수
+	//end of club table
 	
-	public ClubDto() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public ClubDto(Integer club_id, String club_title, Date club_create_time, String club_info, String club_master_id,
-			Integer club_article_id, String club_article_title, Date club_board_upload_time, Integer club_article_cnt,
-			String user_id, int count) {
-		super();
-		this.club_id = club_id;
-		this.club_title = club_title;
-		this.club_create_time = club_create_time;
-		this.club_info = club_info;
-		this.club_master_id = club_master_id;
-		this.club_article_id = club_article_id;
-		this.club_article_title = club_article_title;
-		this.club_board_upload_time = club_board_upload_time;
-		this.club_article_cnt = club_article_cnt;
-		this.user_id = user_id;
-		this.count = count;
-	}
-
-	public Integer getClub_id() {
-		return club_id;
-	}
-
-	public void setClub_id(Integer club_id) {
-		this.club_id = club_id;
-	}
-
-	public String getClub_title() {
-		return club_title;
-	}
-
-	public void setClub_title(String club_title) {
-		this.club_title = club_title;
-	}
-
-	public Date getClub_create_time() {
-		return club_create_time;
-	}
-
-	public void setClub_create_time(Date club_create_time) {
-		this.club_create_time = club_create_time;
-	}
-
-	public String getClub_info() {
-		return club_info;
-	}
-
-	public void setClub_info(String club_info) {
-		this.club_info = club_info;
-	}
-
-	public String getClub_master_id() {
-		return club_master_id;
-	}
-
-	public void setClub_master_id(String club_master_id) {
-		this.club_master_id = club_master_id;
-	}
-
-	public Integer getClub_article_id() {
-		return club_article_id;
-	}
-
-	public void setClub_article_id(Integer club_article_id) {
-		this.club_article_id = club_article_id;
-	}
-
-	public String getClub_article_title() {
-		return club_article_title;
-	}
-
-	public void setClub_article_title(String club_article_title) {
-		this.club_article_title = club_article_title;
-	}
-
-	public Date getClub_board_upload_time() {
-		return club_board_upload_time;
-	}
-
-	public void setClub_board_upload_time(Date club_board_upload_time) {
-		this.club_board_upload_time = club_board_upload_time;
-	}
-
-	public Integer getClub_article_cnt() {
-		return club_article_cnt;
-	}
-
-	public void setClub_article_cnt(Integer club_article_cnt) {
-		this.club_article_cnt = club_article_cnt;
-	}
-
-	public String getUser_id() {
-		return user_id;
-	}
-
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
-	}
+	private int club_article_id;	//동아리 게시글 번호
+	private String club_article_title;	//동아리 게시글 제목
+	private String club_article_content;	//동아리 글 내용
+	private Date club_board_upload_time;	//동아리 글 작성 시간
+	private int club_aricle_viewcnt;	//동아리 게시글 조회수
+	private String user_id;	//동아리 게시글 작성자id
+	//end of club_board table
+	
+	private int club_comment_id;	//댓글번호
+	private String club_comment;	//댓글
+	private Date club_comment_time;	//댓글 입력 시간
+	//end of club_board_comment
+	
+	private int club_member_id;	//가입번호
+	private Date club_secession_date;	//탈퇴날짜
+	private Date club_join_date;	//가입날짜
+	private String user_name;	//유저이름
+	//end of club_member
 	
 
-	public int getCount() {
-		return count;
-	}
-
-	public void setCount(int count) {
-		this.count = count;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(club_article_cnt, club_article_id, club_article_title, club_board_upload_time,
-				club_create_time, club_id, club_info, club_master_id, club_title, count, user_id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ClubDto other = (ClubDto) obj;
-		return Objects.equals(club_article_cnt, other.club_article_cnt)
-				&& Objects.equals(club_article_id, other.club_article_id)
-				&& Objects.equals(club_article_title, other.club_article_title)
-				&& Objects.equals(club_board_upload_time, other.club_board_upload_time)
-				&& Objects.equals(club_create_time, other.club_create_time) && Objects.equals(club_id, other.club_id)
-				&& Objects.equals(club_info, other.club_info) && Objects.equals(club_master_id, other.club_master_id)
-				&& Objects.equals(club_title, other.club_title) && count == other.count
-				&& Objects.equals(user_id, other.user_id);
-	}
-	
-	
 }

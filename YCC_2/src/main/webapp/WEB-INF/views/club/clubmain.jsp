@@ -1,6 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<sec:authentication property="principal" var="pinfo"/>
+
+<%-- <c:choose>
+	<c:when test="${pinfo != 'anonymousUser' }">
+		<c:set var="loginId" value="${pinfo.member.user_id }" />
+		<c:set var="userName" value="${pinfo.member.user_name }" />
+		<c:set var="userGrade" value="${pinfo.member.user_grade }" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="loginId" value="null" />
+		<c:set var="userName" value="null" />
+	</c:otherwise>
+</c:choose> --%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,6 +77,22 @@
 					</div>
 				</div>
 			</div>
+			<%-- <!--인기동아리2 그리드-->
+			<div class="col-md-4">
+				<div style="position: relative;">
+					<img class="img-thumbnail"
+						src="/ycc/resources/img/club/swimclub.jpg">
+					<div class="club-info">
+						<img class="img-fluid" src="/ycc/resources/img/club/swimclub.jpg">
+						<div class="club-info px-2">
+							<h2 style="font-size: 2vw">${list.club_title }</h2>
+							<p style="font-size: 0.8vw">
+								동아리장 : ${list.club_maser_id } | 멤버 수 : ${list.club_member }명 |<br>생성일 : ${list.club_create_time }
+							</p>
+						</div>
+					</div>
+				</div>
+			</div> --%>
 			<!--동아리 추가 그리드-->
 			<div class="col-md-4 h-100">
 				<div style="position: relative;">
@@ -153,6 +184,14 @@
 	          </tr>
 	        </thead>
 	        <tbody>
+		        <c:forEach var="list" items="${list }">
+		        	<tr>
+			            <td class="text-start text-truncate">${list.club_title }</td>
+		  	            <td>${list.club_master_id }</td>
+			            <td>${list.club_member }</td>
+			            <td>${list.club_create_time }</td>
+		          	</tr>
+		        </c:forEach>
 	          <tr>
 	            <td class="text-start text-truncate">영 문화센터 동아리</td>
   	            <td>김영채</td>
