@@ -1,20 +1,27 @@
+
+ <!-- 작성자 : alwaysFinn(김지호)
+ 	  최초 작성일 : '23.01.06
+ 	  마지막 업데이트 : '23.01.11
+ 	  업데이트 내용 : login한 user가 동아리 장인 동아리 목록 가져오는 기능 추가
+ 	  기능 : 동아리 main페이지 view 파일 
+ -->
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <sec:authentication property="principal" var="pinfo"/>
 
-<%-- <c:choose>
+<c:choose>
 	<c:when test="${pinfo != 'anonymousUser' }">
 		<c:set var="loginId" value="${pinfo.member.user_id }" />
 		<c:set var="userName" value="${pinfo.member.user_name }" />
-		<c:set var="userGrade" value="${pinfo.member.user_grade }" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="loginId" value="null" />
 		<c:set var="userName" value="null" />
 	</c:otherwise>
-</c:choose> --%>
+</c:choose>
 
 <!DOCTYPE html>
 <html>
@@ -107,61 +114,53 @@
 		<!-- 내 동아리 -->
 		<h1 class="text-start mt-5">내 동아리</h1>
 		<hr>
-		<div class="text-start px-4">
-			<div class="d-flex me-auto">
-				<img src="/ycc/resources/img/club/ycc_logo.png"
-					class="img-thumbnail rounded-2 me-3" alt="영문화센터"
-					style="height: 150px; width: 150px;">
+		<p class="text-start">내가 만든 동아리</p>
+		<c:if test="${myMsList eq '[]'}">
+				<div class="text-center mb-5">만든 동아리가 없습니다.</div>
+		</c:if>
+		<c:forEach var='myMsList' items="${myMsList }">
+			<div class="text-start px-4">
+				<div class="d-flex me-auto">
+					<img src="/ycc/resources/img/club/ycc_logo.png"
+						class="img-thumbnail rounded-2 me-3"
+						style="height: 150px; width: 150px;">
 				<!-- 동아리 이동(제목클릭) -->
-				<div class="text-truncate">
-					<a href="#"
-					style="text-decoration: none; text-decoration-color: none;">
-					<h4>영 문화센터 동아리</h4>
-					<small class="text-muted">동아리장 : 김영채 | 멤버수 : 7 | 생성일 : 2022-09-07</small> </a>
-					<a href="#" class="text-reset text-decoration-none"><p class="mb-2">가입 인사 합니다.</p></a>
-					<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글 제목 2</p></a>
-					<a href="#" class="text-reset text-decoration-none"><p class="mb-2">안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~</p></a>
+					<div class="text-truncate">
+						<a href="#" style="text-decoration: none; text-decoration-color: none;"></a>
+						<h4>${myMsList.club_title }</h4>
+						<small class="text-muted">동아리장 : ${myMsList.club_master_id } | 멤버수 : ${myMsList.club_member } | 생성일 : ${myMsList.club_create_time }</small>
+						<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글1</p></a>
+						<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글2</p></a>
+						<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글3</p></a>
+					</div>
 				</div>
+				<hr>
 			</div>
-			<hr>
-		</div>
-		<div class="text-start px-4">
-			<div class="d-flex me-auto">
-				<img src="/ycc/resources/img/club/swimclub.jpg"
-					class="img-thumbnail rounded-2 me-3" alt="영문화센터"
-					style="height: 150px; width: 150px;">
+		</c:forEach>
+		<hr>
+		<p class="text-start">내가 가입한 동아리</p>
+		<c:if test="${myList eq '[]'}">
+				<div class="text-center mb-5">가입된 동아리가 없습니다.</div>
+		</c:if>
+		<c:forEach var='myList' items="${myList }">
+			<div class="text-start px-4">
+				<div class="d-flex me-auto">
+					<img src="/ycc/resources/img/club/ycc_logo.png"
+						class="img-thumbnail rounded-2 me-3"
+						style="height: 150px; width: 150px;">
 				<!-- 동아리 이동(제목클릭) -->
-				<div class="text-truncate">
-					<a href="#"
-					style="text-decoration: none; text-decoration-color: none;">
-					<h4>수영 동아리</h4>
-					<small class="text-muted">동아리장 : 최나리 | 멤버수 : 22 | 생성일 : 2022-10-07</small> </a>
-					<a href="#" class="text-reset text-decoration-none"><p class="mb-2">가입 인사 합니다. 수영 처음해봐요!</p></a>
-					<a href="#" class="text-reset text-decoration-none"><p class="mb-2">방가방가 가입인사</p></a>
-					<a href="#" class="text-reset text-decoration-none"><p class="mb-2">안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~</p></a>
+					<div class="text-truncate">
+						<a href="#" style="text-decoration: none; text-decoration-color: none;"></a>
+						<h4>${myList.club_title }</h4>
+						<small class="text-muted">동아리장 : ${myList.club_master_id } | 멤버수 : ${myList.club_member } | 생성일 : ${myList.club_create_time }</small>
+						<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글1</p></a>
+						<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글2</p></a>
+						<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글3</p></a>
+					</div>
 				</div>
+				<hr>
 			</div>
-			<hr>
-		</div>
-		<div class="text-start px-4">
-			<div class="d-flex me-auto">
-				<img src="/ycc/resources/img/club/catclub.jpg"
-					class="img-thumbnail rounded-2 me-3" alt="영문화센터"
-					style="height: 150px; width: 150px;">
-				<!-- 동아리 이동(제목클릭) -->
-				<div class="text-truncate">
-					<a href="#"
-					style="text-decoration: none; text-decoration-color: none;">
-					<h4>고양이 매니아</h4>
-					<small class="text-muted">동아리장 : 최선혜 | 멤버수 : 50 | 생성일 : 2022-09-07</small> </a>
-					<a href="#" class="text-reset text-decoration-none"><p class="mb-2">우리집 고양이가 너무 귀여워 버린 건에 대하여</p></a>
-					<a href="#" class="text-reset text-decoration-none"><p class="mb-2">털 날리는데 로봇 청소기를 사야할까요? 매일 청소하기 힘들어요</p></a>
-					<a href="#" class="text-reset text-decoration-none"><p class="mb-2">안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~안녕하세요~</p></a>
-				</div>
-			</div>
-			<hr>
-		</div>
-		
+		</c:forEach>
 		<!-- 전체 동아리 -->
 		<h1 class="text-start mt-5">전체 동아리</h1>
 		<hr>
@@ -192,42 +191,6 @@
 			            <td>${list.club_create_time }</td>
 		          	</tr>
 		        </c:forEach>
-	          <tr>
-	            <td class="text-start text-truncate">영 문화센터 동아리</td>
-  	            <td>김영채</td>
-	            <td>7</td>
-	            <td>2022-09-07</td>
-	          </tr>
-	          <tr>
-	            <td class="text-start text-truncate">수영 동아리</td>
-	            <td>최나리</td>
-	            <td>22</td>
-	            <td>2022-10-24</td>
-	          </tr>
-	          <tr>
-	            <td class="text-start text-truncate">고양이 매니아</td>
-	            <td>최선혜</td>
-	            <td>50</td>
-	            <td>2022-10-23</td>
-	          </tr>
-	          <tr>
-	            <td class="text-start text-truncate">이름이 정말 정말 긴 동아리</td>
-	            <td>김성호</td>
-	            <td>99</td>
-        	    <td>2022-01-01</td>
-	          </tr>
-	          <tr>
-	            <td class="text-start text-truncate">이름이 정말 정말 정말 정말 정말 정말 긴 동아리</td>
-	            <td>최수정</td>
-	            <td>300</td>
-	            <td>2022-11-01</td>
-	          </tr>
-	          <tr>
-	            <td class="text-start text-truncate">이름이 정말 정말 정말 정말 정말 정말 정말 정말 정말 정말 정말 정말 정말 긴 동아리</td>
-	            <td>최연희</td>
-	            <td>100,000</td>
-	            <td>2022-11-04</td>
-	          </tr>
 	        </tbody>
 	      </table>
 	    </div>
@@ -251,6 +214,7 @@
         </li>
       </ul>
     </nav>
+    <button type="button" class="btn btn-primary " id="clubCreateBtn">동아리 생성</button>
     
     <!-- 검색 영역 -->
 	    <div class="d-flex flex-row mx-auto w-75">
@@ -266,7 +230,12 @@
   
 	</div> <!-- 컨테이너 end -->
 	
+	<script type="text/javascript">
 
+		$("#clubCreateBtn").on("click", function(){
+			location.href = "<c:url value='/club/create' />"
+		})
+	</script>
 
 	<!-- footer include -->
 	<%@include file="/WEB-INF/views/footer.jsp"%>

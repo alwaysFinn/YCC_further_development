@@ -28,5 +28,6 @@
 		<typeAlias alias="StudyroomDto" type="com.youngtvjobs.ycc.rental.StudyroomDto" />
 		
 		<typeAlias alias="AdminDto" type="com.youngtvjobs.ycc.admin.AdminDto" />
+		
 	</typeAliases>
 </configuration>

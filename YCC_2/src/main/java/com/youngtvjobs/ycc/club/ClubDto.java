@@ -24,6 +24,7 @@ public class ClubDto {
 	private String club_info;	//동아리 설명
 	private String club_master_id;	//동아리장 아이디
 	private int club_member;	//동아리 멤버 수
+	private String club_status;	//동아리 활성화 비활성화 여부
 	//end of club table
 	
 	private int club_article_id;	//동아리 게시글 번호
