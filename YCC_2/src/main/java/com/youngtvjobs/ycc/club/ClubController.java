@@ -1,7 +1,7 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.09
+ * 마지막 업데이트 : '23.01.14
  * 업데이트 내용 : login한 user의 동아리 목록 가져오는 select 기능 추가, 동아리 생성 insert 기능 추가
  * 기능 : 동아리 불러오기 기능 구현된 동아리 controller 
  */
@@ -64,7 +64,7 @@ public class ClubController
 			e.printStackTrace();
 		}
 		
-		return "club/clubdetail";
+		return "club/clubcreate";
 	}
 	
 	@PostMapping("/club/create")
@@ -92,7 +92,7 @@ public class ClubController
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "club/clubdetail";
+		return "club/clubcreate";
 	}
 
 	@PostMapping("/club/board")

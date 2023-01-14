@@ -1,8 +1,8 @@
 
  <!-- 작성자 : alwaysFinn(김지호)
  	  최초 작성일 : '23.01.09
- 	  마지막 업데이트 : '23.01.11
- 	  업데이트 내용 : 동아리 생성 페이지 create 및 동아리 상세 보기 페이지 create
+ 	  마지막 업데이트 : '23.01.14
+ 	  업데이트 내용 : 동아리 생성 페이지 javascript 추가
  	  기능 : 동아리 생성 페이지 view 파일 
  -->
 
@@ -76,12 +76,17 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 		$("#submitBtn").on("click", function(){
+			
+			
         	let form = $("#form")
 			form.attr("action", "<c:url value='/club/create' />")
 			form.attr("method", "post")
 			form.submit()
     	
 		})	
+		
+		
+		
 	})
 	</script>
 	

@@ -46,6 +46,13 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 		$("#submitBtn").on("click", function(){
+			
+			if("#club_title" == null){
+				alert("동아리 이름을 입력해주세요");
+				document.getElementById("#club_title").focus();
+				
+			}
+			
         	let form = $("#form")
 			form.attr("action", "<c:url value='/club/create' />")
 			form.attr("method", "post")
