@@ -28,7 +28,7 @@
 	<div class="container mt-3">
 		<div class="Section_title_inner">
 			<div class="section_title_inner">
-				<h2 class=title">동아리 만들기</h2>
+				<h2 class=title">"${clubDto.club_title}"</h2>
 				<p class="txt">나와 같은 관심사를 가진 멤버를 모집하고 열심히 운영하여 동아리를 성장시켜보세요.</p>
 				<hr>
 			</div>

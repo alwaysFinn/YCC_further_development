@@ -84,22 +84,6 @@
 					</div>
 				</div>
 			</div>
-			<%-- <!--인기동아리2 그리드-->
-			<div class="col-md-4">
-				<div style="position: relative;">
-					<img class="img-thumbnail"
-						src="/ycc/resources/img/club/swimclub.jpg">
-					<div class="club-info">
-						<img class="img-fluid" src="/ycc/resources/img/club/swimclub.jpg">
-						<div class="club-info px-2">
-							<h2 style="font-size: 2vw">${list.club_title }</h2>
-							<p style="font-size: 0.8vw">
-								동아리장 : ${list.club_maser_id } | 멤버 수 : ${list.club_member }명 |<br>생성일 : ${list.club_create_time }
-							</p>
-						</div>
-					</div>
-				</div>
-			</div> --%>
 			<!--동아리 추가 그리드-->
 			<div class="col-md-4 h-100">
 				<div style="position: relative;">
