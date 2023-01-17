@@ -99,52 +99,67 @@
 		<h1 class="text-start mt-5">내 동아리</h1>
 		<hr>
 		<p class="text-start">내가 만든 동아리</p>
-		<c:if test="${myMsList eq '[]'}">
+		<c:choose>
+			<c:when test="${myMsList eq '[]'}">
 				<div class="text-center mb-5">만든 동아리가 없습니다.</div>
-		</c:if>
-		<c:forEach var='myMsList' items="${myMsList }">
-			<div class="text-start px-4">
-				<div class="d-flex me-auto">
-					<img src="/ycc/resources/img/club/ycc_logo.png"
-						class="img-thumbnail rounded-2 me-3"
-						style="height: 150px; width: 150px;">
-				<!-- 동아리 이동(제목클릭) -->
-					<div class="text-truncate">
-						<a href="#" style="text-decoration: none; text-decoration-color: none;"></a>
-						<h4>${myMsList.club_title }</h4>
-						<small class="text-muted">동아리장 : ${myMsList.club_master_id } | 멤버수 : ${myMsList.club_member } | 생성일 : ${myMsList.club_create_time }</small>
-						<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글1</p></a>
-						<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글2</p></a>
-						<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글3</p></a>
+			</c:when>
+			<c:when test="${loginId eq 'null'}">
+				<div class="text-center mb-5">로그인을 해주세요.</div>
+			</c:when>
+			<c:otherwise> 
+				<c:forEach var='myMsList' items="${myMsList }">
+					<div class="text-start px-4">
+						<div class="d-flex me-auto">
+							<img src="/ycc/resources/img/club/ycc_logo.png"
+							class="img-thumbnail rounded-2 me-3"
+							style="height: 150px; width: 150px;">
+					<!-- 동아리 이동(제목클릭) -->
+							<div class="text-truncate">
+								<a href="#" style="text-decoration: none; text-decoration-color: none;"></a>
+								<h4>${myMsList.club_title }</h4>
+								<small class="text-muted">동아리장 : ${myMsList.club_master_id } | 멤버수 : ${myMsList.club_member } | 생성일 : ${myMsList.club_create_time }</small>
+								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글1</p></a>
+								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글2</p></a>
+								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글3</p></a>
+							</div>
+						</div>
+						<hr>
 					</div>
-				</div>
-				<hr>
-			</div>
-		</c:forEach>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
+		
 		<hr>
 		<p class="text-start">내가 가입한 동아리</p>
-		<c:if test="${myList eq '[]'}">
+		<c:choose>
+			<c:when test="${myList eq '[]'}">
 				<div class="text-center mb-5">가입된 동아리가 없습니다.</div>
-		</c:if>
-		<c:forEach var='myList' items="${myList }">
-			<div class="text-start px-4">
-				<div class="d-flex me-auto">
-					<img src="/ycc/resources/img/club/ycc_logo.png"
-						class="img-thumbnail rounded-2 me-3"
-						style="height: 150px; width: 150px;">
-				<!-- 동아리 이동(제목클릭) -->
-					<div class="text-truncate">
-						<a href="#" style="text-decoration: none; text-decoration-color: none;"></a>
-						<h4>${myList.club_title }</h4>
-						<small class="text-muted">동아리장 : ${myList.club_master_id } | 멤버수 : ${myList.club_member } | 생성일 : ${myList.club_create_time }</small>
-						<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글1</p></a>
-						<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글2</p></a>
-						<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글3</p></a>
+			</c:when>
+			<c:when test="${loginId eq 'null'}">
+				<div class="text-center mb-5">로그인을 해주세요</div>
+			</c:when>
+			<c:otherwise>
+				<c:forEach var='myList' items="${myList }">
+					<div class="text-start px-4">
+						<div class="d-flex me-auto">
+							<img src="/ycc/resources/img/club/ycc_logo.png"
+								class="img-thumbnail rounded-2 me-3"
+								style="height: 150px; width: 150px;">
+						<!-- 동아리 이동(제목클릭) -->
+							<div class="text-truncate">
+								<a href="#" style="text-decoration: none; text-decoration-color: none;"></a>
+								<h4>${myList.club_title }</h4>
+								<small class="text-muted">동아리장 : ${myList.club_master_id } | 멤버수 : ${myList.club_member } | 생성일 : ${myList.club_create_time }</small>
+								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글1</p></a>
+								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글2</p></a>
+								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글3</p></a>
+							</div>
+						</div>
+						<hr>
 					</div>
-				</div>
-				<hr>
-			</div>
-		</c:forEach>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
 		<!-- 전체 동아리 -->
 		<h1 class="text-start mt-5">전체 동아리</h1>
 		<hr>
@@ -215,9 +230,14 @@
 	</div> <!-- 컨테이너 end -->
 	
 	<script type="text/javascript">
+		$(document).ready(function() {
+			
+			alert("${loginId}")
 
-		$("#clubCreateBtn").on("click", function(){
-			location.href = "<c:url value='/club/create' />"
+			$("#clubCreateBtn").on("click", function(){
+				location.href = "<c:url value='/club/create' />"
+			})
+		
 		})
 	</script>
 
