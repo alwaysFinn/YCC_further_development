@@ -1,8 +1,8 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.11
- * 업데이트 내용 : 내가 동아리 장인 동아리 목록 불러오기 기능 추가
+ * 마지막 업데이트 : '23.01.18
+ * 업데이트 내용 : 선택한 동아리 이름에 따라 해당 동아리 상세 정보 페이지로 이동하는 기능
  * 기능 : 동아리 CRUD 기능 구현된 동아리 DaoImpl로 clubmapper와 연결됨 
  */
 
@@ -45,6 +45,11 @@ public class ClubDaoImpl implements ClubDao{
 	@Override
 	public List<ClubDto> selectMasterMyClub(String club_master_id) throws Exception {
 		return session.selectList(namespace + "selectMasterMyClub", club_master_id);
+	}
+
+	@Override
+	public List<ClubDto> selectClubDetail(String club_title) throws Exception {
+		return session.selectList(namespace + "selectClubDetail", club_title);
 	}
 
 }

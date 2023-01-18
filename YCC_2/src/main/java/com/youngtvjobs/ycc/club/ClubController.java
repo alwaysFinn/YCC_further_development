@@ -1,7 +1,7 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.14
+ * 마지막 업데이트 : '23.01.15
  * 업데이트 내용 : login한 user의 동아리 목록 가져오는 select 기능 추가, 동아리 생성 insert 기능 추가
  * 기능 : 동아리 불러오기 기능 구현된 동아리 controller 
  */
@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -54,6 +55,7 @@ public class ClubController
 		return "club/clubmain";
 	}
 	
+	//새로운 동아리 만드는 페이지로 이동하는 getmapping
 	@GetMapping("/club/create")
 	public String clubDetail(Model m){
 		m.addAttribute("mode", "new");
@@ -67,6 +69,7 @@ public class ClubController
 		return "club/clubcreate";
 	}
 	
+	//동아리 만든 후 서버로 전송하는 postmapping
 	@PostMapping("/club/create")
 	public String clubCreate(ClubDto clubDto, String club_title, String club_info, Authentication auth) {
 		
@@ -94,6 +97,23 @@ public class ClubController
 		}
 		return "club/clubcreate";
 	}
+	
+	@GetMapping("/club/detail")
+	public String clubDetail(HttpServletRequest request, Authentication auth, ClubDto clubDto, Model m) {
+		
+		String club_title = request.getParameter("title");
+		System.out.println("club_title : " + club_title);
+		
+		try {
+			clubDto.setClub_title(club_title);
+			List<ClubDto> clubDetail = clubService.selectClubDetail(club_title);
+			m.addAttribute("clubDetail", clubDetail);
+			System.out.println("clubDetail : " + clubDetail);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "club/clubdetail";
+	}
 
 	@PostMapping("/club/board")
 	public String clubBoard(HttpServletRequest request)
@@ -116,11 +136,11 @@ public class ClubController
 		return "club/board/edit";
 	}
 
-	@RequestMapping("club/board/write")
-	public String clubWrite(HttpServletRequest request)
-	{
-	
-		return "club/board/write";
+	@GetMapping("/club/write")
+	public String clubWrite(Authentication auth, ClubDto clubDto, Model m) {
+		m.addAttribute("mode", "new");
+		
+		return "club/clubboard";
 	}
 
 	

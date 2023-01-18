@@ -7,11 +7,16 @@
 <!--
 	 작성자 : alwaysFinn(김지호)
 	 최초 작성일 : '23.01.06
-	 마지막 업데이트 : '23.01.11
-	 업데이트 내용 : 내 동아리 불러오기 기능에 내가 동아리 장인 동아리도 보이게 수정
+	 마지막 업데이트 : '23.01.18
+	 업데이트 내용 : 이동하는 clubdetail에 club_title을 기반으로 해당 DB 값들 불러오는 쿼리문 추가 
 	 기능 : 동아리 불러오기 기능 구현된 동아리 mapper로 DB와 연결됨
  --> 
 <mapper namespace="com.youngtvjobs.ycc.club.clubMapper" >
+
+	<sql id="selectFromClub">
+		select *
+		from club
+	</sql>
 	
 	<!-- 모든 동아리 목록 가져오는 select문 -->
 	<select id="selectAllClub" resultType="ClubDto">
@@ -45,9 +50,13 @@
 	</select>
 	
 	<select id="selectMasterMyClub" parameterType="String" resultType="ClubDto">
-		SELECT *
-		FROM club
+		<include refid="selectFromClub" />
 		where club_master_id = #{club_master_id}
+	</select>
+	
+	<select id="selectClubDetail" parameterType="String" resultType="ClubDto">
+		<include refid="selectFromClub" />
+		where club_title = #{club_title}	
 	</select>
   
 </mapper>

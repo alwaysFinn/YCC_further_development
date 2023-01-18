@@ -1,8 +1,8 @@
 
  <!-- 작성자 : alwaysFinn(김지호)
  	  최초 작성일 : '23.01.06
- 	  마지막 업데이트 : '23.01.11
- 	  업데이트 내용 : login한 user가 동아리 장인 동아리 목록 가져오는 기능 추가
+ 	  마지막 업데이트 : '23.01.17
+ 	  업데이트 내용 : login을 했는지, 만든 동아리가 있는지 없는지에 분기를 줘서 출력되는 문구 차별화
  	  기능 : 동아리 main페이지 view 파일 
  -->
 
@@ -123,7 +123,6 @@
 								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글3</p></a>
 							</div>
 						</div>
-						<hr>
 					</div>
 				</c:forEach>
 			</c:otherwise>
@@ -136,7 +135,7 @@
 				<div class="text-center mb-5">가입된 동아리가 없습니다.</div>
 			</c:when>
 			<c:when test="${loginId eq 'null'}">
-				<div class="text-center mb-5">로그인을 해주세요</div>
+				<div class="text-center mb-5">로그인을 해주세요.</div>
 			</c:when>
 			<c:otherwise>
 				<c:forEach var='myList' items="${myList }">
@@ -165,34 +164,38 @@
 		<hr>
 		
 	    <!--게시판 부분-->
-	    <div class=" p-3">
-	      <table class="table table-hover mt-3" style="table-layout: fixed;">
-	      	<colgroup>
-	      		<col width = 46%>
-	      		<col width = 17%>
-	      		<col width = 15%>
-	      		<col width = 22%>
-	      	</colgroup>
-	        <thead>
-	          <tr>
-	            <th scope="col">동아리명</th>
-	            <th scope="col">동아리장</th>
-	            <th scope="col">멤버수</th>
-	            <th scope="col">생성일</th>
-	          </tr>
-	        </thead>
-	        <tbody>
-		        <c:forEach var="list" items="${list }">
-		        	<tr>
-			            <td class="text-start text-truncate">${list.club_title }</td>
-		  	            <td>${list.club_master_id }</td>
-			            <td>${list.club_member }</td>
-			            <td>${list.club_create_time }</td>
-		          	</tr>
-		        </c:forEach>
-	        </tbody>
-	      </table>
-	    </div>
+	    <form id="frm" action="<c:url value="/club" />" class="search-form" method="get">
+		    <div class=" p-3">
+		      <table class="table table-hover mt-3" style="table-layout: fixed;">
+		      	<colgroup>
+		      		<col width = 46%>
+		      		<col width = 17%>
+		      		<col width = 15%>
+		      		<col width = 22%>
+		      	</colgroup>
+		        <thead>
+		          <tr>
+		            <th scope="col">동아리명</th>
+		            <th scope="col">동아리장</th>
+		            <th scope="col">멤버수</th>
+		            <th scope="col">생성일</th>
+		          </tr>
+		        </thead>
+		        <tbody>
+			        <c:forEach var="list" items="${list }">
+			        	<tr>
+				            <td class="text-start text-truncate">
+				            	<a name="club_title" style="text-decoration: none; color: black;" href="<c:url value="/club/detail?title=${list.club_title }"/> ">${list.club_title }</a>
+				            </td>	
+			  	            <td>${list.club_master_id }</td>
+				            <td>${list.club_member }</td>
+				            <td>${list.club_create_time }</td>
+			          	</tr>
+			        </c:forEach>
+		        </tbody>
+		      </table>
+		    </div>
+	    </form>
 	    
 	    
     <!-- 페이지 네비게이션 -->
@@ -218,8 +221,8 @@
     <!-- 검색 영역 -->
 	    <div class="d-flex flex-row mx-auto w-75">
 	      <select class="form-select form-select-sm mx-2 w-25" aria-label=".form-select-sm example">
-	        <option value="1">제목</option>
-	        <option value="2">작성자</option>
+	        <option value="1">동아리 이름</option>
+	        <option value="2">동아리장</option>
 	      </select>
 	      <input type="text" class="form-control mx-2 w-50" aria-label="title" aria-describedby="basic-addon1">
 	      <button type="button" class="btn btn-primary mx-2" style="width: 80px">검색</button>
@@ -231,11 +234,13 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
-			
-			alert("${loginId}")
 
 			$("#clubCreateBtn").on("click", function(){
-				location.href = "<c:url value='/club/create' />"
+				if(${myMsList eq '[]'}){
+					location.href = "<c:url value='/club/create' />"
+				}else if(${myMsList ne '[]'}){
+					alert("계정당 1개의 동아리만 만들 수 있습니다.")
+				}
 			})
 		
 		})

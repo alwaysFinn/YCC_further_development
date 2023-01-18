@@ -46,5 +46,6 @@ public class ClubDto {
 	private String user_name;	//유저이름
 	//end of club_member
 	
+	private int count;
 
 }
