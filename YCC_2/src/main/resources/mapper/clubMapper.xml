@@ -7,8 +7,9 @@
 <!--
 	 작성자 : alwaysFinn(김지호)
 	 최초 작성일 : '23.01.06
-	 마지막 업데이트 : '23.01.18
-	 업데이트 내용 : 이동하는 clubdetail에 club_title을 기반으로 해당 DB 값들 불러오는 쿼리문 추가 
+	 마지막 업데이트 : '23.01.20
+	 업데이트 내용 : club_id를 기반으로 해당 동아리 게시글 목록 불러오는 기능 추가 
+	 			  해당 동아리에 가입하기 위해 member인지 아닌지 확인하는 기능 추가
 	 기능 : 동아리 불러오기 기능 구현된 동아리 mapper로 DB와 연결됨
  --> 
 <mapper namespace="com.youngtvjobs.ycc.club.clubMapper" >
@@ -54,9 +55,27 @@
 		where club_master_id = #{club_master_id}
 	</select>
 	
-	<select id="selectClubDetail" parameterType="String" resultType="ClubDto">
+	<select id="selectClubDetail" parameterType="int" resultType="ClubDto">
 		<include refid="selectFromClub" />
-		where club_title = #{club_title}	
+		where club_id = #{club_id}	
 	</select>
   
+  	<select id="selectBoardFromClub" parameterType="int" resultType="CLubDto">
+  		select *
+		from club_board
+		where club_id = #{club_id}
+  	</select>
+  	
+  	<select id="clubMemberYn" parameterType="ClubDto" resultType="int">
+  		select count(*)
+		from club_member
+		where user_id = #{user_id}
+		and club_id = #{club_id}
+	</select>  
+	
+	<insert id="joinClub" parameterType="ClubDto">
+		INSERT INTO club_member
+		(club_join_date, user_id, user_name, club_id)
+		VALUES(now(), #{user_id}, #{user_name}, #{club_id});
+	</insert>
 </mapper>

@@ -1,8 +1,8 @@
 
  <!-- 작성자 : alwaysFinn(김지호)
  	  최초 작성일 : '23.01.09
- 	  마지막 업데이트 : '23.01.18
- 	  업데이트 내용 : 동아리 상세 페이지 접근 기능 업데이트
+ 	  마지막 업데이트 : '23.01.20
+ 	  업데이트 내용 : 동아리 상세 페이지 접근 시 해당 동아리id로 게시글들 불러오는 기능 추가
  	  기능 : 동아리 생성 페이지 view 파일 
  -->
 
@@ -12,6 +12,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <sec:authentication property="principal" var="pinfo"/>
+<c:set var="loginId" value="${pinfo.member.user_id }" />
 
 <!DOCTYPE html>
 <html>
@@ -28,18 +29,20 @@
 		<div class="Section_title_inner">
 			<div class="section_title_inner">
 				<div name="club_photo" style="border:solid;" class="px-2 text-center">사진 들어갈 부분
-				<h2 class=title" style="font-size:2vw"></h2>
-				<h5 style="font-size:0.8vw">동아리장 : | 생성일 | 멤버수 : ${clubDetail.club_member }</h5>
+				<h1 class=title" style="font-size:2vw">${clubDetail[0].club_title }</h1>
+				<h5 style="font-size:0.8vw">동아리장 : ${clubDetail[0].club_master_id } | 생성일 : ${clubDetail[0].club_create_time } | 멤버수 : ${clubDetail[0].club_member }</h5>
 				</div>
 			</div>
 		<hr>
 			<div id="club_info" class="text-center">
-				동아리 설명글 들어갈 부분
+				${clubDetail[0].club_info }
 			</div>
 			<%-- <c:out value="${clubDetail.club_info}"/> --%>
 		</div>
+		<hr>
 	<div class="Section_Club_Board">
-		<table class="table table-group-divider table table-striped table table-hover mt-5" >
+		<h2 class="text-center mt-5">우리 동아리 게시판</h2>
+		<table class="table table-group-divider table table-striped table table-hover mt1" >
 			<colgroup>
 				<col width="50%">
 				<col width="15%">
@@ -56,31 +59,47 @@
 			</thead>
 	
 		 <sec:authentication property="principal" var="pinfo"/>
-			<c:forEach var="boardDto" items="${nList }">
+			<c:forEach var="clubDto" items="${cbList }">
 				<tr>
 					<td class="title"  >
-						<a style="text-decoration: none; color: black;" href="<c:url value="/board/post${pr.sc.queryString }&article_id=${boardDto.article_id  }"/>">
-							${boardDto.article_title }
+						<a style="text-decoration: none; color: black;" href="<c:url value="/club/post${pr.sc.queryString }&article_id=${clubDto.club_article_id  }"/>">
+							${clubDto.club_article_title }
 		      			</a>
 					</td>
-					<td class="writer" style = text-align:center;>${boardDto.user_id }</td>
-					<td class="regdate" style = text-align:center;><fmt:formatDate value="${boardDto.article_date }" pattern="yyyy-MM-dd" type="date"/></td>
-					<td class="viewcnt" style = text-align:center;>${boardDto.article_viewcnt }</td>
+					<td class="writer" style = text-align:center;>${clubDto.user_id }</td>
+					<td class="regdate" style = text-align:center;><fmt:formatDate value="${clubDto.club_board_upload_time }" pattern="yyyy-MM-dd" type="date"/></td>
+					<td class="viewcnt" style = text-align:center;>${clubDto.club_aricle_viewcnt }</td>
 				</tr>
 			</c:forEach>
 		 </table>
 
 		<!-- 작성하기 버튼  -->
-		<!-- 관리자만 보이도록 구현하기 -->
 		 <sec:authentication property="principal" var="pinfo"/>
 		 <sec:authorize access="isAuthenticated()">
-			<c:if test ="${pinfo.member.user_grade eq '관리자'}">
+		 <c:choose>
+			<c:when test ="${mode eq 'Y'}">
 			<div class="row">
 				<div class="col">
-					<a id="writeBtn" class="btn btn-primary " style="float:right" onclick="location.href='<c:url value="/board/write" />' "role="button">작성하기</a>    	
+					<a id="writeBtn" class="btn btn-primary " style="float:right" onclick="location.href='<c:url value="/club/write" />' "role="button">작성하기</a>    	
 			 	</div>
 			</div>
-			</c:if>
+			</c:when>
+			<c:when test ="${mode eq 'N'}">
+			<div class="row">
+				<div class="col">
+					<a id="writeBtn" class="btn btn-primary " style="float:right" onclick="location.href='<c:url value="/club/register" />' "role="button">가입하기</a>    	
+			 	</div>
+			</div>
+			</c:when>
+			<c:when test ="${loginId eq ''}">
+			<div class="row">
+				<div class="col">
+					로그인을 해주세요    	
+			 	</div>
+			</div>
+			</c:when>
+		</c:choose>
+			
 		</sec:authorize>
 		<!-- 페이징 시작 -->
 		<div class="paging-container">
@@ -144,9 +163,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 
-		
-		
-		
+
 		
 	})
 </script>

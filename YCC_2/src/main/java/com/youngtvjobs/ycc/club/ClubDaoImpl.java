@@ -48,8 +48,23 @@ public class ClubDaoImpl implements ClubDao{
 	}
 
 	@Override
-	public List<ClubDto> selectClubDetail(String club_title) throws Exception {
-		return session.selectList(namespace + "selectClubDetail", club_title);
+	public List<ClubDto> selectClubDetail(int club_id) throws Exception {
+		return session.selectList(namespace + "selectClubDetail", club_id);
+	}
+
+	@Override
+	public List<ClubDto> selectClubBoard(int club_id) throws Exception {
+		return session.selectList(namespace + "selectBoardFromClub", club_id);
+	}
+
+	@Override
+	public int clubMemberYn(ClubDto clubDto) throws Exception {
+		return session.selectOne(namespace + "clubMemberYn", clubDto);
+	}
+
+	@Override
+	public int joinClub(ClubDto clubDto) throws Exception {
+		return session.insert(namespace + "joinClub", clubDto);
 	}
 
 }

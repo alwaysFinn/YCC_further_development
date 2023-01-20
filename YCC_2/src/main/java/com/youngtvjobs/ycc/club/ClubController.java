@@ -1,8 +1,8 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.15
- * 업데이트 내용 : login한 user의 동아리 목록 가져오는 select 기능 추가, 동아리 생성 insert 기능 추가
+ * 마지막 업데이트 : '23.01.20
+ * 업데이트 내용 : 동아리 상세 페이지 접근 방식 'club_title'->'club_id'로 변경 및 동아리 게시글 불러오기 기능 추가
  * 기능 : 동아리 불러오기 기능 구현된 동아리 controller 
  */
 
@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.youngtvjobs.ycc.member.security.CustomUser;
+
 @Controller
 public class ClubController
 {
@@ -31,11 +33,10 @@ public class ClubController
 	@GetMapping("/club")
 	public String clubMain(Authentication auth, Model m) throws Exception{
 
-		System.out.println("auth : " + auth);
-		
 		//로그인한 정보가 있다면 해당 유저가 가입한 동아리 목록 불러오는 기능
 		try {
 			if(auth != null) {
+				
 				String user_id = auth.getName();
 				String club_master_id = auth.getName();
 				List<ClubDto> myMsList = clubService.selectMasterMyClub(club_master_id);	//login한 user가 동아리 장인 동아리 목록
@@ -71,7 +72,7 @@ public class ClubController
 	
 	//동아리 만든 후 서버로 전송하는 postmapping
 	@PostMapping("/club/create")
-	public String clubCreate(ClubDto clubDto, String club_title, String club_info, Authentication auth) {
+	public String clubCreate(ClubDto clubDto, String club_title, String club_info, int club_id, Authentication auth) {
 		
 		
 		System.out.println(club_title);
@@ -82,12 +83,22 @@ public class ClubController
 		clubDto.setClub_title(club_title);
 		clubDto.setClub_info(club_info);
 		
+
+		CustomUser user = (CustomUser) auth.getPrincipal();
+		String user_name = user.getMember().getUser_name();
+		clubDto.setUser_name(user_name);
+		
 		try {
 			if(clubService.overlapCreateValChk(clubDto) != 1) {//동아리 중복 생성 방지 유효성 체크
 				if(clubService.createClub(clubDto) != 1) {	//동아리 생성하는 insert, 성공하면 0, 실패하면 1을 return
 					throw new Exception("동아리 생성 실패");
 				}else {
-					System.out.println("동아리 생성 성공");
+					System.out.println("club_id : " + club_id);
+					if(clubService.joinClub(clubDto) != 1) {
+						throw new Exception("동아리 생성 및 가입 실패");
+					}else {
+						System.out.println("동아리 생성 성공");
+					}
 				}
 			}else {
 				throw new Exception("동아리 중복 생성 불가");
@@ -101,14 +112,28 @@ public class ClubController
 	@GetMapping("/club/detail")
 	public String clubDetail(HttpServletRequest request, Authentication auth, ClubDto clubDto, Model m) {
 		
-		String club_title = request.getParameter("title");
-		System.out.println("club_title : " + club_title);
+		int club_id = Integer.parseInt(request.getParameter("id"));	//request.getParameter는 string으로 불러오므로 int로 형변환 필수
+		System.out.println("club_id : " + club_id);
+		String user_id = auth.getName();
+		System.out.println("user_id : " + user_id);
 		
 		try {
-			clubDto.setClub_title(club_title);
-			List<ClubDto> clubDetail = clubService.selectClubDetail(club_title);
+			clubDto.setClub_id(club_id);
+			List<ClubDto> clubDetail = clubService.selectClubDetail(club_id);
 			m.addAttribute("clubDetail", clubDetail);
 			System.out.println("clubDetail : " + clubDetail);
+			
+			List<ClubDto> cbList = clubService.selectClubBoard(club_id);
+			m.addAttribute("cbList", cbList);
+			System.out.println("cbList : " + cbList);
+			
+			clubDto.setUser_id(user_id);
+			if(clubService.chkClubMember(clubDto) == 1) {
+				m.addAttribute("mode", "Y");
+			}else {
+				m.addAttribute("mode", "N");
+			}
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

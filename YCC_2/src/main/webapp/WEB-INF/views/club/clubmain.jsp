@@ -185,7 +185,7 @@
 			        <c:forEach var="list" items="${list }">
 			        	<tr>
 				            <td class="text-start text-truncate">
-				            	<a name="club_title" style="text-decoration: none; color: black;" href="<c:url value="/club/detail?title=${list.club_title }"/> ">${list.club_title }</a>
+				            	<a name="club_title" style="text-decoration: none; color: black;" href="<c:url value="/club/detail?id=${list.club_id }"/> ">${list.club_title }</a>
 				            </td>	
 			  	            <td>${list.club_master_id }</td>
 				            <td>${list.club_member }</td>
