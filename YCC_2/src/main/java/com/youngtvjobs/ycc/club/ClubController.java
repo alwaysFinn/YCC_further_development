@@ -83,9 +83,11 @@ public class ClubController
 		clubDto.setClub_title(club_title);
 		clubDto.setClub_info(club_info);
 		
-
+		// user의 name에 접근하기 위한 객체 생성
 		CustomUser user = (CustomUser) auth.getPrincipal();
+		// 위에서 만든 객체를 기반으로 DTO의 memberDto에 접근하여 getname
 		String user_name = user.getMember().getUser_name();
+		//setter를 사용하여 얻어낸 user_name 전송
 		clubDto.setUser_name(user_name);
 		
 		try {
