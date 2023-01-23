@@ -234,6 +234,10 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
+			
+			let msg = "${msg}"
+			if(msg == "JOIN_SUCCESS") alert("성공적으로 가입되었습니다")
+			if(msg == "JOIN_FAIL") alert("동아리 가입에 실패하였습니다 잠시 후 다시 시도해주세요")	
 
 			$("#clubCreateBtn").on("click", function(){
 				if(${myMsList eq '[]'}){

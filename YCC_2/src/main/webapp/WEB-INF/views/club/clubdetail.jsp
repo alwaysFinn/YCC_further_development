@@ -158,7 +158,12 @@
 	$(document).ready(function(){
 		
 		$("#regiBtn").on("click", function(){
-        	alert("동아리에 가입하시겠습니까?");
+        	alert("해당 동아리에 가입합니다");
+        	let form = $("#form")
+			form.attr("action", "<c:url value='/club/clubDetail' />")
+			form.attr("method", "post")
+			form.submit()
+        	
         	
     	
 	})

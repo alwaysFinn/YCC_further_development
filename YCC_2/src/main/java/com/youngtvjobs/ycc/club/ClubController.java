@@ -1,7 +1,7 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.20
+ * 마지막 업데이트 : '23.01.23
  * 업데이트 내용 : 동아리 상세 페이지 접근 방식 'club_title'->'club_id'로 변경 및 동아리 게시글 불러오기 기능 추가
  * 기능 : 동아리 불러오기 기능 구현된 동아리 controller 
  */
@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.youngtvjobs.ycc.member.security.CustomUser;
 
@@ -58,7 +59,7 @@ public class ClubController
 	
 	//새로운 동아리 만드는 페이지로 이동하는 getmapping
 	@GetMapping("/club/create")
-	public String clubDetail(Model m){
+	public String clubCreate(Model m){
 		m.addAttribute("mode", "new");
 		
 		try {
@@ -90,12 +91,7 @@ public class ClubController
 				if(clubService.createClub(clubDto) != 1) {	//동아리 생성하는 insert, 성공하면 0, 실패하면 1을 return
 					throw new Exception("동아리 생성 실패");
 				}else {
-					System.out.println("club_id : " + club_id);
-					if(clubService.joinClub(clubDto) != 1) {
-						throw new Exception("동아리 생성 및 가입 실패");
-					}else {
-						System.out.println("동아리 생성 성공");
-					}
+					System.out.println("동아리 생성 성공");
 				}
 			}else {
 				throw new Exception("동아리 중복 생성 불가");
@@ -106,6 +102,7 @@ public class ClubController
 		return "club/clubcreate";
 	}
 	
+	//동아리 상세보기 페이지 접근하는 getmapping
 	@GetMapping("/club/detail")
 	public String clubDetail(HttpServletRequest request, Authentication auth, ClubDto clubDto, Model m) {
 		
@@ -132,6 +129,25 @@ public class ClubController
 			e.printStackTrace();
 		}
 		return "club/clubdetail";
+	}
+	
+	//동아리 가입하기 클릭 시 작동하는 postmapping
+	@PostMapping("/club/detail")
+	public String clubDetail(ClubDto clubDto, RedirectAttributes rattr) {
+		try {
+			
+			if(clubService.joinClub(clubDto) != 1) {
+				rattr.addFlashAttribute("msg", "JOIN_FAIL");
+				return "redirect:/club";
+			}else {
+				System.out.println("동아리 가입 성공");
+				rattr.addFlashAttribute("msg", "JOIN_SUCCESS");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "club/clubmain";
 	}
 
 	@PostMapping("/club/board")

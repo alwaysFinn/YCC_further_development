@@ -26,4 +26,5 @@ public interface ClubDao {
 	int clubMemberYn(ClubDto clubDto) throws Exception; //클럽 id와 user_id를 기반으로 비교해 해당 동아리에 가입한 사람인지 아닌지 체크하는 기능
 	
 	int joinClub(ClubDto clubDto) throws Exception; //동아리 가입
+	int updateClubMemberCnt(Integer club_id, int cnt) throws Exception;//동아리 가입 시 총원 +1
 }
