@@ -78,4 +78,16 @@
 		(club_join_date, user_id, user_name, club_id)
 		VALUES(now(), #{user_id}, #{user_name}, #{club_id});
 	</insert>
+	
+	<update id="clubMemberPlus" parameterType="map">
+		UPDATE club
+		SET club_member = club_member + 1
+		WHERE club_id = #{club_id}
+	</update>
+	
+	<update id="updateApplicantCnt" parameterType="map">
+		UPDATE tb_course
+		SET course_applicants = course_applicants + #{cnt}
+		WHERE course_id = #{course_id}
+	</update>
 </mapper>

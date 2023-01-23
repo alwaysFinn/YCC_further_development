@@ -1,8 +1,8 @@
 
  <!-- 작성자 : alwaysFinn(김지호)
  	  최초 작성일 : '23.01.09
- 	  마지막 업데이트 : '23.01.20
- 	  업데이트 내용 : 동아리 상세 페이지 접근 시 해당 동아리id로 게시글들 불러오는 기능 추가
+ 	  마지막 업데이트 : '23.01.23
+ 	  업데이트 내용 : 동아리 가입, 탈퇴 기능 및 가입 시 동아리 멤버 +1
  	  기능 : 동아리 생성 페이지 view 파일 
  -->
 
@@ -62,7 +62,7 @@
 			<c:forEach var="clubDto" items="${cbList }">
 				<tr>
 					<td class="title"  >
-						<a style="text-decoration: none; color: black;" href="<c:url value="/club/post${pr.sc.queryString }&article_id=${clubDto.club_article_id  }"/>">
+						<a style="text-decoration: none; color: black;" href="<c:url value="/club/board${pr.sc.queryString }&article_id=${clubDto.club_article_id  }"/>">
 							${clubDto.club_article_title }
 		      			</a>
 					</td>
@@ -80,6 +80,7 @@
 			<c:when test ="${mode eq 'Y'}">
 			<div class="row">
 				<div class="col">
+					<a id="secessionBtn" class="btn btn-danger ms-3" style="float:right" onclick=""role="button">탈퇴하기</a>
 					<a id="writeBtn" class="btn btn-primary " style="float:right" onclick="location.href='<c:url value="/club/write" />' "role="button">작성하기</a>    	
 			 	</div>
 			</div>
@@ -87,14 +88,7 @@
 			<c:when test ="${mode eq 'N'}">
 			<div class="row">
 				<div class="col">
-					<a id="writeBtn" class="btn btn-primary " style="float:right" onclick="location.href='<c:url value="/club/register" />' "role="button">가입하기</a>    	
-			 	</div>
-			</div>
-			</c:when>
-			<c:when test ="${loginId eq ''}">
-			<div class="row">
-				<div class="col">
-					로그인을 해주세요    	
+					<a id="regiBtn" class="btn btn-primary " style="float:right" onclick=""role="button">가입하기</a>    	
 			 	</div>
 			</div>
 			</c:when>
@@ -162,6 +156,12 @@
 	</div>
 <script type="text/javascript">
 	$(document).ready(function(){
+		
+		$("#regiBtn").on("click", function(){
+        	alert("동아리에 가입하시겠습니까?");
+        	
+    	
+	})
 
 
 		

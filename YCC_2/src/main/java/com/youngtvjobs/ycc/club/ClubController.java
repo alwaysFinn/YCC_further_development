@@ -73,12 +73,7 @@ public class ClubController
 	//동아리 만든 후 서버로 전송하는 postmapping
 	@PostMapping("/club/create")
 	public String clubCreate(ClubDto clubDto, String club_title, String club_info, int club_id, Authentication auth) {
-		
-		
-		System.out.println(club_title);
-		System.out.println(club_info);
-		System.out.println(auth.getName());
-		
+
 		clubDto.setClub_master_id(auth.getName());
 		clubDto.setClub_title(club_title);
 		clubDto.setClub_info(club_info);
@@ -115,9 +110,7 @@ public class ClubController
 	public String clubDetail(HttpServletRequest request, Authentication auth, ClubDto clubDto, Model m) {
 		
 		int club_id = Integer.parseInt(request.getParameter("id"));	//request.getParameter는 string으로 불러오므로 int로 형변환 필수
-		System.out.println("club_id : " + club_id);
 		String user_id = auth.getName();
-		System.out.println("user_id : " + user_id);
 		
 		try {
 			clubDto.setClub_id(club_id);
@@ -127,7 +120,6 @@ public class ClubController
 			
 			List<ClubDto> cbList = clubService.selectClubBoard(club_id);
 			m.addAttribute("cbList", cbList);
-			System.out.println("cbList : " + cbList);
 			
 			clubDto.setUser_id(user_id);
 			if(clubService.chkClubMember(clubDto) == 1) {
