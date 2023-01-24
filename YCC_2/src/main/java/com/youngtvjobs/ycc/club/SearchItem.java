@@ -15,8 +15,8 @@ import static java.lang.Math.*;
 public class SearchItem {
 
 	public static final int DEFAULT_PAGE_SIZE = 10;	// 한 페이지에 보여줄 게시물 수 (기본 설정) 
-	public static final int MIN_PAGE_SIZE = 5;		// ?
-	public static final int MAX_PAGE_SIZE = 50;		// ?
+	public static final int MIN_PAGE_SIZE = 5;		// 최소 게시글 수
+	public static final int MAX_PAGE_SIZE = 50;		// 최대 게시글 수
 	
 	private Integer page = 1;
 	private Integer pageSize = DEFAULT_PAGE_SIZE;	
