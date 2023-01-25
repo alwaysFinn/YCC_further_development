@@ -34,7 +34,7 @@
 				</div>
 			</div>
 		<hr>
-			<div id="club_info" class="text-center">
+			<div id="club_info" class="text-center">  
 				${clubDetail[0].club_info }
 			</div>
 			<%-- <c:out value="${clubDetail.club_info}"/> --%>
