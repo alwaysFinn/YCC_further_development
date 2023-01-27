@@ -12,7 +12,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <sec:authentication property="principal" var="pinfo"/>
-<c:set var="loginId" value="${pinfo.member.user_id }" />
+<%-- <c:set var="loginId" value="${pinfo.member.user_id }" /> --%>
 
 <!DOCTYPE html>
 <html>
@@ -81,7 +81,7 @@
 			<div class="row">
 				<div class="col">
 					<a id="secessionBtn" class="btn btn-danger ms-3" style="float:right" onclick=""role="button">탈퇴하기</a>
-					<a id="writeBtn" class="btn btn-primary " style="float:right" onclick="location.href='<c:url value="/club/write" />' "role="button">작성하기</a>    	
+					<a id="writeBtn" class="btn btn-primary " style="float:right" onclick="location.href='<c:url value="/club/board/write" />' "role="button">작성하기</a>    	
 			 	</div>
 			</div>
 			</c:when>
@@ -103,22 +103,22 @@
 				</c:if>
 				<c:if test="${totalCnt != null || totalCnt != 0}">
 					<c:if test="${pr.showPrev}">
-						<a class="page-link " href="/ycc/board/notice${pr.sc.getQueryString(pr.beginPage-1)}">이전</a>
+						<a class="page-link " href="/ycc/club/board${pr.sc.getQueryString(pr.beginPage-1)}">이전</a>
 					</c:if>
 					<c:forEach var="i" begin="${pr.beginPage}" end="${pr.endPage}">
 					<c:if test="${pr.sc.page == i }">
 						<c:if test="${pr.sc.page > 0 }">
-							<li class="page-item active"><a class="page-link" href="/ycc/board/notice${pr.sc.getQueryString(i)}">${i}</a></li>
+							<li class="page-item active"><a class="page-link" href="/ycc/club/board${pr.sc.getQueryString(i)}">${i}</a></li>
 						</c:if>
 					</c:if>
 					<c:if test="${pr.sc.page != i }">
 						<c:if test="${pr.sc.page > 0 }">
-							<li class="page-item"><a class="page-link" href="/ycc/board/notice${pr.sc.getQueryString(i)}">${i}</a></li>
+							<li class="page-item"><a class="page-link" href="/ycc/club/board${pr.sc.getQueryString(i)}">${i}</a></li>
 						</c:if>
 					</c:if>
 					</c:forEach>
 					<c:if test="${pr.showNext }">
-						<a class="page-link" href="<c:url value="/board/notice${pr.sc.getQueryString(pr.endPage + 1) }" />">다음</a>
+						<a class="page-link" href="<c:url value="/club/board${pr.sc.getQueryString(pr.endPage + 1) }" />">다음</a>
 					</c:if>
 				</c:if>
 			</ul>

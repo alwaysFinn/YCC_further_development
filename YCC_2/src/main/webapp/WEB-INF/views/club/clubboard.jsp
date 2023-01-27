@@ -22,14 +22,14 @@
   	<!-- header inlcude -->
 	<%@include file="/WEB-INF/views/header.jsp"%>
   		<!--container start-->
-  		<form action='<c:url value="/board/write" />' name="writeForm" method="post">
+  		<form id="form" method="post" action="" >
   			<div class="container mt-5">
     			<h3 class="posttitle pt-3">글쓰기</h3>
    				<hr>
-   					<input type="text" class="form-control mb-3" id="title" name="article_title"
-   					 placeholder="제목을 입력해주세요" value="${clubDto.club_article_title }">
-    				<textarea class="summernote mb-5" id="contents" name="article_contents"  >
-    				${clubDto.club_article_content}</textarea>
+   					<input type="text" class="form-control mb-3" id="title" name="club_article_title"
+   					 placeholder="제목을 입력해주세요">
+    				<textarea class="summernote mb-5" id="contents" name="club_article_contents">
+    				</textarea>
     				
 				<!-- summernote 업로드 -->
 <!--    				<div class="input-group mb-3 mt-3"> -->
@@ -40,7 +40,7 @@
     			
     			
 	    		<div class="m-5" style="text-align: center;">
-	      			<input class="btn btn-primary mx-3" id="regBtn" type="button" onclick="regCheck()" value="등록하기" >
+	      			<button type="button" class="btn btn-primary mx-3" id="postBtn">등록하기</button>
 	      			<input class="btn btn-secondary" type="button" value="취소하기">
 	    		</div>
 	    		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
@@ -50,33 +50,53 @@
   <script type="text/javascript">
   	$(document).ready(function() {
 
-	   //summernot 
-	  $('.summernote').summernote({
-	      height: 400,
-	      lang: "ko-KR"
-	    });
+		 //summernot 
+		$('.summernote').summernote({
+			placeholder:"내용을 입력하세요.",
+		    height: 400,
+		    lang: "ko-KR",
+		    disableResizeEditor: true,
+		    toolbar: [
+                // [groupName, [list of button]]
+                ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']],
+                ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
+                ['color', ['forecolor','color']],
+                ['table', ['table']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['insert',['picture','link','video']],
+                ['view',['help']]
+              ]
+		  });
 	  
 	   
-	   
-	  function regCheck() {
-		  	//title에 값이 없으면 alert창 띄우고 ,focus
-		  	if($("#title").val()== ""){
-				alert("제목을 입력해주세요");
-				document.writeForm.article_title.focus();
+		let nullCheck = function() {
+				let form = document.getElementById("form")
+				if(form.club_article_title.value==""){
+					alert("제목을 입력해주세요.")
+					form.club_article_title.focus()
+					return false
+				}
+				if(form.club_article_contents.value=="") {
+					alert("내용을 입력해 주세요.")
+					form.club_article_contents.focus()
+					return false
+				}
+				return true;
 			}
-		  	//contents에 값이 없으면 alert창 띄우고 ,focus
-			else if($("#contents").val()==""){
-				alert("내용을 입력해주세요");
-				document.writeForm.article_contents.focus();
-			}
-			//title, contents에 값이 있으면 submit 후 alert창 띄우기 
-			else if($("#title").val()!="" && $("#contents").val()!="") {
-				document.writeForm.submit();
-				alert("등록되었습니다.")
-			}
-					
-	  }
-	  				
+			
+		 $("#postBtn").on("click", function() {
+			let form = $("#form");
+			form.attr("action", "<c:url value='/club/board/write' />")
+			form.attr("method", "post")
+			
+			if(nullCheck())
+				console.log("title : ", (document.getElementById("title").value))
+				console.log("contents : ", (document.getElementById("contents").value))
+				//form.submit()
+		})
+	  		 		
   	})
   
   </script>
