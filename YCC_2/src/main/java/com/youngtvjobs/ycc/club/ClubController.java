@@ -107,18 +107,23 @@ public class ClubController
 	public String clubDetail(HttpServletRequest request, Authentication auth, ClubDto clubDto, Model m) {
 		
 		int club_id = Integer.parseInt(request.getParameter("id"));	//request.getParameter는 string으로 불러오므로 int로 형변환 필수
-		String user_id = auth.getName();
+		
 		
 		try {
-			clubDto.setClub_id(club_id);
-			List<ClubDto> clubDetail = clubService.selectClubDetail(club_id);
-			m.addAttribute("clubDetail", clubDetail);
-			System.out.println("clubDetail : " + clubDetail);
-			
-			List<ClubDto> cbList = clubService.selectClubBoard(club_id);
-			m.addAttribute("cbList", cbList);
-			
-			clubDto.setUser_id(user_id);
+			if(auth != null) {
+				String user_id = auth.getName();
+				clubDto.setClub_id(club_id);
+				List<ClubDto> clubDetail = clubService.selectClubDetail(club_id);
+				m.addAttribute("clubDetail", clubDetail);
+				System.out.println("clubDetail : " + clubDetail);
+				
+				List<ClubDto> cbList = clubService.selectClubBoard(club_id);
+				m.addAttribute("cbList", cbList);
+				
+				clubDto.setUser_id(user_id);
+			}else {
+				return "redirect:/login";
+			}
 			if(clubService.chkClubMember(clubDto) == 1) {
 				m.addAttribute("mode", "Y");
 			}else {
@@ -171,12 +176,22 @@ public class ClubController
 		return "club/board/edit";
 	}
 
-	@GetMapping("/club/write")
+	@GetMapping("/club/board/write")
 	public String clubWrite(Authentication auth, ClubDto clubDto, Model m) {
 		m.addAttribute("mode", "new");
 		
 		return "club/clubboard";
 	}
 
+	@PostMapping("club/board/write")
+	public String clubWrite(ClubDto clubDto) {
+		
+		try {
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 }

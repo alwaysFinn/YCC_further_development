@@ -75,4 +75,9 @@ public class ClubServiceImpl implements ClubService{
 		clubDao.updateClubMemberCnt(clubDto.getClub_id(), 1);// 동아리 가입 시 동아리 총원 +1 동시에 진행되게 설정
 		return clubDao.joinClub(clubDto);
 	}
+
+	@Override
+	public int BoardWrite(ClubDto clubDto) throws Exception {
+		return clubDao.clubBoardWrite(clubDto);
+	}
 }

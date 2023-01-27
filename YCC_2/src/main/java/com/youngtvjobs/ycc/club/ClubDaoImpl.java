@@ -78,4 +78,9 @@ public class ClubDaoImpl implements ClubDao{
 		return session.update(namespace + "clubMemberPlus", map);
 	}
 
+	@Override
+	public int clubBoardWrite(ClubDto clubDto) throws Exception {
+		return session.update(namespace + "clubBoardWrite", clubDto);
+	}
+
 }

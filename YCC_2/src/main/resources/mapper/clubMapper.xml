@@ -59,12 +59,6 @@
 		where club_id = #{club_id}	
 	</select>
   
-  	<select id="selectBoardFromClub" parameterType="int" resultType="CLubDto">
-  		select *
-		from club_board
-		where club_id = #{club_id}
-  	</select>
-  	
   	<select id="clubMemberYn" parameterType="ClubDto" resultType="int">
   		select count(*)
 		from club_member
@@ -83,5 +77,42 @@
 		SET club_member = club_member + 1
 		WHERE club_id = #{club_id}
 	</update>
+	
+	<select id="selectBoardFromClub" parameterType="int" resultType="CLubDto">
+  		select *
+		from club_board
+		where club_id = #{club_id}
+  	</select>
+  	
+  	<sql id="searchCondition">
+  		<choose>
+  			<when test='option=="T"'>
+  				AND club_article_title LIKE concat('%', #{keyword}, '%')
+  			</when>
+  			<when test='option=="W"'>
+  				AND user_id LIKE concat('%', #{keyword}, '%')
+  			</when>
+  			<otherwise>
+  				AND (club_article_title LIKE concat('%', #{keyword}, '%')
+  				OR club_article_contents LIKE concat('%', #{keyword}, '%'))
+  			</otherwise>
+  		</choose>
+  	</sql>
+  	
+  	<!-- 동아리 게시판 글쓰기 insert -->
+  	<insert id="clubBoardWrite" parameterType="ClubDto">
+  		INSERT INTO club_board
+		(club_article_id, club_article_title, club_article_content, club_board_upload_time, club_article_viewcnt, club_id, user_id)
+		VALUES(#{club_article_id}, #{club_article_title}, #{club_article_content}, now(), #{club_article_viewcnt}, #{club_id}, #{user_id})
+  	</insert>
+  	
+  	<!-- 동아리 게시판 수정하기 update -->
+  	<update id="clubBoardEdit" parameterType="ClubDto">
+  		UPDATE club_board
+		SET club_article_title=#{club_article_title}, club_article_content=#{club_article_content}, club_board_upload_time=now(), club_id=#{club_id}, user_id=#{user_id}
+		WHERE club_article_id=#{club_article_id}
+		AND user_id=#{user_id}
+  	</update>
+  	
 	
 </mapper>

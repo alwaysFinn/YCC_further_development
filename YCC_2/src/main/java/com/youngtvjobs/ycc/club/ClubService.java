@@ -26,5 +26,8 @@ public interface ClubService {
 	int chkClubMember(ClubDto clubDto) throws Exception; //해당 동아리에 가입한 사람인지 아닌지 체크
 	
 	int joinClub(ClubDto clubDto) throws Exception;//동아리 가입하는 insert기능
+	
+	
+	int BoardWrite(ClubDto clubDto)throws Exception;
 }
 

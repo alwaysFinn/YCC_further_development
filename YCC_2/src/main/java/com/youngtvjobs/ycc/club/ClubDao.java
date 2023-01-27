@@ -27,4 +27,7 @@ public interface ClubDao {
 	
 	int joinClub(ClubDto clubDto) throws Exception; //동아리 가입
 	int updateClubMemberCnt(Integer club_id, int cnt) throws Exception;//동아리 가입 시 총원 +1
+	
+	int clubBoardWrite(ClubDto clubDto) throws Exception;	// 클럽 게시판 작성
+	
 }
