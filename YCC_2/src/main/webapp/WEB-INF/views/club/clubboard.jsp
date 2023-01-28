@@ -10,11 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js">	</script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
-  
-  <%
-//   	String noticeURI = request.getParameter("board");
-//   	String eventURI = request.getParameter("board");
-  %>
+ 
 <title>글쓰기</title>
 </head>
 
@@ -53,50 +49,38 @@
 		 //summernot 
 		$('.summernote').summernote({
 			placeholder:"내용을 입력하세요.",
-		    height: 400,
+		    height: 600,
 		    lang: "ko-KR",
-		    disableResizeEditor: true,
-		    toolbar: [
-                // [groupName, [list of button]]
-                ['fontname', ['fontname']],
-                ['fontsize', ['fontsize']],
-                ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
-                ['color', ['forecolor','color']],
-                ['table', ['table']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['height', ['height']],
-                ['insert',['picture','link','video']],
-                ['view',['help']]
-              ]
+		    disableResizeEditor: true
 		  });
-	  
 	   
+		 
 		let nullCheck = function() {
-				let form = document.getElementById("form")
-				if(form.club_article_title.value==""){
-					alert("제목을 입력해주세요.")
-					form.club_article_title.focus()
-					return false
-				}
-				if(form.club_article_contents.value=="") {
-					alert("내용을 입력해 주세요.")
-					form.club_article_contents.focus()
-					return false
-				}
-				return true;
+		let form = document.getElementById("form")
+			if(form.club_article_title.value==""||form.club_article_title.value==null){
+				alert("제목을 입력해주세요.");
+				form.club_article_title.focus();
+				return false;
 			}
+			if(document.getElementById("contents").value==""||document.getElementById("contents").value==null) {
+				alert("내용을 입력해 주세요.");
+				$('.summernote').summernote('focus');
+				return false;
+			}
+			return true;
+		}
 			
 		 $("#postBtn").on("click", function() {
 			let form = $("#form");
 			form.attr("action", "<c:url value='/club/board/write' />")
 			form.attr("method", "post")
 			
-			if(nullCheck())
-				console.log("title : ", (document.getElementById("title").value))
-				console.log("contents : ", (document.getElementById("contents").value))
+			if(nullCheck()){
 				//form.submit()
+				console.log(document.getElementById("contents").value)
+			}
 		})
-	  		 		
+		
   	})
   
   </script>
