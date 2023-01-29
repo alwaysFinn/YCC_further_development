@@ -33,7 +33,7 @@
    					<input type="hidden" id="club_id" name="club_id" value="${club_id}">
    					<input type="text" class="form-control mb-3" id="title" name="club_article_title"
    					 placeholder="제목을 입력해주세요">
-    				<textarea class="summernote mb-5" id="contents" name="club_article_contents">
+    				<textarea class="summernote mb-5" id="contents" name="club_article_contents" readonly>
     				</textarea>
     				
 				<!-- summernote 업로드 -->
@@ -64,8 +64,8 @@
 		  });
 		 
 		let msg = "${msg}"
-			if(msg == "WRITE_ERR") alert("게시글 등록에 실패했습니다 잠시 후 다시 시도해주세요.")
-			if(msg == "UPDATE_SUCCESS") alert("수정 성공")
+			if(msg == "WRITE_FAIL") alert("게시글 등록에 실패했습니다 잠시 후 다시 시도해주세요.")
+			if(msg == "WRITE_ERR") alert("잠시 후 다시 시도해주세요")
 	   
 		 
 		let nullCheck = function() {

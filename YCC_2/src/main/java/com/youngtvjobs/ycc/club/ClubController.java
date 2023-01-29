@@ -104,13 +104,20 @@ public class ClubController
 	
 	//동아리 상세보기 페이지 접근하는 getmapping
 	@GetMapping("/club/detail")
-	public String clubDetail(HttpServletRequest request, Authentication auth, ClubDto clubDto, Model m) {
+	public String clubDetail(SearchItem sc, HttpServletRequest request, Authentication auth, ClubDto clubDto, Model m) {
 		
 		int club_id = Integer.parseInt(request.getParameter("id"));	//request.getParameter는 string으로 불러오므로 int로 형변환 필수
 		
-		
 		try {
 			if(auth != null) {
+				
+				/*
+				 * int totalCnt = clubService.검색결과(sc); m.addAttribute("totalCnt", totalCnt);
+				 * 
+				 * PageResolver pageResolver = new PageResolver(totalCnt, sc);
+				 * m.addAttribute("pr", pageResolver);
+				 */
+				
 				String user_id = auth.getName();
 				clubDto.setClub_id(club_id);
 				List<ClubDto> clubDetail = clubService.selectClubDetail(club_id);
@@ -140,7 +147,6 @@ public class ClubController
 	@PostMapping("/club/detail")
 	public String clubDetail(ClubDto clubDto, RedirectAttributes rattr) {
 		try {
-			
 			if(clubService.joinClub(clubDto) != 1) {
 				rattr.addFlashAttribute("msg", "JOIN_FAIL");
 				return "redirect:/club";
@@ -185,7 +191,8 @@ public class ClubController
 	}
 
 	@PostMapping("club/board/write")
-	public String clubWrite(HttpServletRequest request, Model m, ClubDto clubDto, Authentication auth, String club_article_title, String club_article_contents, int club_id) {
+	public String clubWrite(RedirectAttributes rattr, HttpServletRequest request, Model m, ClubDto clubDto, Authentication auth, String club_article_title, String club_article_contents, int club_id) {
+		
 		
 		try {
 			System.out.println("club_article_title : " + club_article_title);
@@ -200,19 +207,21 @@ public class ClubController
 			clubDto.setClub_article_content(club_article_contents);
 			
 			if(clubService.BoardWrite(clubDto) != 1) {
-				System.out.println("글 작성 오류");
-				m.addAttribute("msg", "WRITE_ERR");
+				System.out.println("글 작성 실패");
+				rattr.addFlashAttribute("msg", "WRITE_FAIL");
 				return "redirect:/club/board/write";
 			}else {
 				System.out.println("글 정상 등록");
-				m.addAttribute("msg", "WRITE_OK");
-				return "redirect:/club/detail"; //어떤 동아리인지 세부 정보 작설 필요
+				rattr.addFlashAttribute("msg", "WRITE_OK");
+				return "redirect:/club/detail?id=" + club_id;
 			}
 			
 		}catch(Exception e){
 			e.printStackTrace();
+			System.out.println("글 등록 오류");
+			rattr.addFlashAttribute("msg", "WRITE_ERR");
+			return "redirect:/club/board/write";
 		}
-		return "club/clubdetail";
 	}
 	
 }

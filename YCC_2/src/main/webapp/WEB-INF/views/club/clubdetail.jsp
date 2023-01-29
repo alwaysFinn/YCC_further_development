@@ -157,6 +157,9 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
+		let msg = "${msg}"
+			if(msg == "WRITE_OK") alert("글이 등록되었습니다.")
+		
 		$("#regiBtn").on("click", function(){
         	alert("해당 동아리에 가입합니다");
         	let form = $("#form")
