@@ -80,7 +80,8 @@
 	<script type="text/javascript">
 		let msg = "${msg}"
 		if(msg == "UPDATE_FAIL") alert("수정 실패")
-		if(msg == "UPDATE_SUCCESS") alert("수정 성공")		
+		if(msg == "UPDATE_SUCCESS") alert("수정 성공")	
+		if(msg == "UPDATE_ERR") alert("잠시 후 다시 시도해주세요")
 	</script>
 	
 	

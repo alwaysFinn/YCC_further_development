@@ -103,10 +103,11 @@ public class AdminController
 		}catch(Exception e) {
 			e.printStackTrace();
 			System.out.println("업데이트 실패");
+			rattr.addFlashAttribute("msg", "UPDATE_ERR");
+			
+			return "redirect:/admin";
 		}
 		
-		
-		return "admin/adminmain";
 	}
 
 
