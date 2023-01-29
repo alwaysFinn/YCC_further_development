@@ -1,8 +1,8 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.23
- * 업데이트 내용 : 동아리 상세 페이지 접근 방식 'club_title'->'club_id'로 변경 및 동아리 게시글 불러오기 기능 추가
+ * 마지막 업데이트 : '23.01.29
+ * 업데이트 내용 : 동아리 게시글 등록 기능 추가
  * 기능 : 동아리 불러오기 기능 구현된 동아리 controller 
  */
 
@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -20,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.youngtvjobs.ycc.member.security.CustomUser;
@@ -177,21 +177,42 @@ public class ClubController
 	}
 
 	@GetMapping("/club/board/write")
-	public String clubWrite(Authentication auth, ClubDto clubDto, Model m) {
+	public String clubWrite(@RequestParam("id") int club_id, Authentication auth, ClubDto clubDto, Model m) {
 		m.addAttribute("mode", "new");
+		m.addAttribute("club_id", club_id);
 		
 		return "club/clubboard";
 	}
 
 	@PostMapping("club/board/write")
-	public String clubWrite(ClubDto clubDto) {
+	public String clubWrite(HttpServletRequest request, Model m, ClubDto clubDto, Authentication auth, String club_article_title, String club_article_contents, int club_id) {
 		
 		try {
+			System.out.println("club_article_title : " + club_article_title);
+			System.out.println("club_article_contents : " + club_article_contents);
+			System.out.println("club_id : " + club_id);
+			
+			String user_id = auth.getName();
+			System.out.println("user_id : " + user_id);
+			clubDto.setClub_id(club_id);
+			clubDto.setUser_id(user_id);
+			clubDto.setClub_article_title(club_article_title);
+			clubDto.setClub_article_content(club_article_contents);
+			
+			if(clubService.BoardWrite(clubDto) != 1) {
+				System.out.println("글 작성 오류");
+				m.addAttribute("msg", "WRITE_ERR");
+				return "redirect:/club/board/write";
+			}else {
+				System.out.println("글 정상 등록");
+				m.addAttribute("msg", "WRITE_OK");
+				return "redirect:/club/detail"; //어떤 동아리인지 세부 정보 작설 필요
+			}
 			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return null;
+		return "club/clubdetail";
 	}
 	
 }

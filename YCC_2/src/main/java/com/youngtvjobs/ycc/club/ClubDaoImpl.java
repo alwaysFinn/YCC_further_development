@@ -80,7 +80,7 @@ public class ClubDaoImpl implements ClubDao{
 
 	@Override
 	public int clubBoardWrite(ClubDto clubDto) throws Exception {
-		return session.update(namespace + "clubBoardWrite", clubDto);
+		return session.insert(namespace + "clubBoardWrite", clubDto);
 	}
 
 }

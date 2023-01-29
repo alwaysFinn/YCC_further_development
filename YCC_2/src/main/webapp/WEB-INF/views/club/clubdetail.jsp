@@ -1,8 +1,8 @@
 
  <!-- 작성자 : alwaysFinn(김지호)
  	  최초 작성일 : '23.01.09
- 	  마지막 업데이트 : '23.01.23
- 	  업데이트 내용 : 동아리 가입, 탈퇴 기능 및 가입 시 동아리 멤버 +1
+ 	  마지막 업데이트 : '23.01.29
+ 	  업데이트 내용 : 동아리 게시글 작성시 url에 파라미터로 club_id도 같이 보냄
  	  기능 : 동아리 생성 페이지 view 파일 
  -->
 
@@ -68,7 +68,7 @@
 					</td>
 					<td class="writer" style = text-align:center;>${clubDto.user_id }</td>
 					<td class="regdate" style = text-align:center;><fmt:formatDate value="${clubDto.club_board_upload_time }" pattern="yyyy-MM-dd" type="date"/></td>
-					<td class="viewcnt" style = text-align:center;>${clubDto.club_aricle_viewcnt }</td>
+					<td class="viewcnt" style = text-align:center;>${clubDto.club_article_viewcnt }</td>
 				</tr>
 			</c:forEach>
 		 </table>
@@ -81,7 +81,7 @@
 			<div class="row">
 				<div class="col">
 					<a id="secessionBtn" class="btn btn-danger ms-3" style="float:right" onclick=""role="button">탈퇴하기</a>
-					<a id="writeBtn" class="btn btn-primary " style="float:right" onclick="location.href='<c:url value="/club/board/write" />' "role="button">작성하기</a>    	
+					<a id="writeBtn" class="btn btn-primary " style="float:right" onclick='location.href="<c:url value='/club/board/write?id=${clubDetail[0].club_id }' />" 'role="button">작성하기</a>    	
 			 	</div>
 			</div>
 			</c:when>

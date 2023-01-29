@@ -1,3 +1,11 @@
+
+ <!-- 작성자 : alwaysFinn(김지호)
+ 	  최초 작성일 : '23.01.12
+ 	  마지막 업데이트 : '23.01.29
+ 	  업데이트 내용 : summernote nullCheck 기능 구현 및 게시글 등록 기능 추가
+ 	  기능 : 동아리 게시글 작성, 수정, 읽기 페이지
+ -->
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -22,6 +30,7 @@
   			<div class="container mt-5">
     			<h3 class="posttitle pt-3">글쓰기</h3>
    				<hr>
+   					<input type="hidden" id="club_id" name="club_id" value="${club_id}">
    					<input type="text" class="form-control mb-3" id="title" name="club_article_title"
    					 placeholder="제목을 입력해주세요">
     				<textarea class="summernote mb-5" id="contents" name="club_article_contents">
@@ -53,21 +62,26 @@
 		    lang: "ko-KR",
 		    disableResizeEditor: true
 		  });
+		 
+		let msg = "${msg}"
+			if(msg == "WRITE_ERR") alert("게시글 등록에 실패했습니다 잠시 후 다시 시도해주세요.")
+			if(msg == "UPDATE_SUCCESS") alert("수정 성공")
 	   
 		 
 		let nullCheck = function() {
-		let form = document.getElementById("form")
-			if(form.club_article_title.value==""||form.club_article_title.value==null){
-				alert("제목을 입력해주세요.");
-				form.club_article_title.focus();
-				return false;
-			}
-			if(document.getElementById("contents").value==""||document.getElementById("contents").value==null) {
-				alert("내용을 입력해 주세요.");
-				$('.summernote').summernote('focus');
-				return false;
-			}
-			return true;
+			let form = document.getElementById("form")
+			let contents = document.getElementById("contents").value;
+				if(form.club_article_title.value==""||form.club_article_title.value==null){
+					alert("제목을 입력해주세요.");
+					form.club_article_title.focus();
+					return false;
+				}// summernote는 기본적으로 공백이 존재하므로 해당 공백을 제거하는 trim()메서드 사용 후 nullcheck진행
+				if(contents.trim() == ""|| contents.trim() == null) {
+					alert("내용을 입력해 주세요.");
+					$('.summernote').summernote('focus');
+					return false;
+				}
+				return true;
 		}
 			
 		 $("#postBtn").on("click", function() {
@@ -76,8 +90,7 @@
 			form.attr("method", "post")
 			
 			if(nullCheck()){
-				//form.submit()
-				console.log(document.getElementById("contents").value)
+				form.submit()
 			}
 		})
 		

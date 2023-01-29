@@ -31,7 +31,7 @@ public class ClubDto {
 	private String club_article_title;	//동아리 게시글 제목
 	private String club_article_content;	//동아리 글 내용
 	private Date club_board_upload_time;	//동아리 글 작성 시간
-	private int club_aricle_viewcnt;	//동아리 게시글 조회수
+	private int club_article_viewcnt;	//동아리 게시글 조회수
 	private String user_id;	//동아리 게시글 작성자id
 	//end of club_board table
 	
