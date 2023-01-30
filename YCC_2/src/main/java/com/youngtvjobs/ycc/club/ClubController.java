@@ -1,8 +1,8 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.29
- * 업데이트 내용 : 동아리 게시글 등록 기능 추가
+ * 마지막 업데이트 : '23.01.30
+ * 업데이트 내용 : 동아리 검색 기능 및 페이지네이션 기능 구현
  * 기능 : 동아리 불러오기 기능 구현된 동아리 controller 
  */
 
@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.youngtvjobs.ycc.common.PageResolver;
+import com.youngtvjobs.ycc.common.SearchItem;
 import com.youngtvjobs.ycc.member.security.CustomUser;
 
 @Controller
@@ -32,7 +34,7 @@ public class ClubController
 
 	//동아리 메인 페이지
 	@GetMapping("/club")
-	public String clubMain(Authentication auth, Model m) throws Exception{
+	public String clubMain(SearchItem sc, Authentication auth, Model m) throws Exception{
 
 		//로그인한 정보가 있다면 해당 유저가 가입한 동아리 목록 불러오는 기능
 		try {
@@ -48,9 +50,20 @@ public class ClubController
 				System.out.println("내가 만든 동아리 목록 : " + myMsList);
 			}
 			
-			List<ClubDto> list = clubService.selectAllClub();	//생성되어있는 모든 동아리 목록
+			int totalCnt = clubService.getAllClubSearchResultCnt(sc);
+			m.addAttribute("totalCnt", totalCnt);
+			
+			PageResolver pageResolver = new PageResolver(totalCnt, sc);
+			
+			List<ClubDto> list = clubService.getAllClubSearchResultPage(sc);
 			m.addAttribute("list", list);
-			System.out.println("모든 동아리 목록 : " + list);
+			m.addAttribute("pr", pageResolver);
+			System.out.println("totalCnt:" + totalCnt);
+			System.out.println("pr:" + pageResolver);
+			/*
+			 * List<ClubDto> list = clubService.selectAllClub(); //생성되어있는 모든 동아리 목록
+			 * m.addAttribute("list", list); System.out.println("모든 동아리 목록 : " + list);
+			 */
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -73,7 +86,7 @@ public class ClubController
 	
 	//동아리 만든 후 서버로 전송하는 postmapping
 	@PostMapping("/club/create")
-	public String clubCreate(ClubDto clubDto, String club_title, String club_info, int club_id, Authentication auth) {
+	public String clubCreate(Model m, ClubDto clubDto, String club_title, String club_info, Authentication auth) {
 
 		clubDto.setClub_master_id(auth.getName());
 		clubDto.setClub_title(club_title);
@@ -84,39 +97,41 @@ public class ClubController
 		// 위에서 만든 객체를 기반으로 DTO의 memberDto에 접근하여 getname
 		String user_name = user.getMember().getUser_name();
 		//setter를 사용하여 얻어낸 user_name 전송
-		clubDto.setUser_name(user_name);
+		clubDto.setClub_master_nm(user_name);
 		
 		try {
 			if(clubService.overlapCreateValChk(clubDto) != 1) {//동아리 중복 생성 방지 유효성 체크
 				if(clubService.createClub(clubDto) != 1) {	//동아리 생성하는 insert, 성공하면 0, 실패하면 1을 return
-					throw new Exception("동아리 생성 실패");
+					System.out.println("동아리 생성 실패");
+					m.addAttribute("msg", "CREATE_FAIL");
+					return "redirect:/club/create";
 				}else {
 					System.out.println("동아리 생성 성공");
+					m.addAttribute("msg", "CREATE_OK");
+					return "redirect:/club";
 				}
 			}else {
-				throw new Exception("동아리 중복 생성 불가");
+				System.out.println("동아리 중복 생성 불가");
+				m.addAttribute("msg", "CREATE_ERR");
+				return "redirect:/club";
+				
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
+			System.out.println("club create Exception 발생");
+			m.addAttribute("msg", "CREATE_FAIL");
+			return "redirect:/club/create";
 		}
-		return "club/clubcreate";
 	}
 	
 	//동아리 상세보기 페이지 접근하는 getmapping
 	@GetMapping("/club/detail")
-	public String clubDetail(SearchItem sc, HttpServletRequest request, Authentication auth, ClubDto clubDto, Model m) {
+	public String clubDetail(ClubSearchItem sc, HttpServletRequest request, Authentication auth, ClubDto clubDto, Model m) {
 		
 		int club_id = Integer.parseInt(request.getParameter("id"));	//request.getParameter는 string으로 불러오므로 int로 형변환 필수
 		
 		try {
 			if(auth != null) {
-				
-				/*
-				 * int totalCnt = clubService.검색결과(sc); m.addAttribute("totalCnt", totalCnt);
-				 * 
-				 * PageResolver pageResolver = new PageResolver(totalCnt, sc);
-				 * m.addAttribute("pr", pageResolver);
-				 */
 				
 				String user_id = auth.getName();
 				clubDto.setClub_id(club_id);
@@ -128,6 +143,19 @@ public class ClubController
 				m.addAttribute("cbList", cbList);
 				
 				clubDto.setUser_id(user_id);
+				
+				
+				int totalCnt = clubService.getClubSearchResultCnt(sc);
+				m.addAttribute("totalCnt", totalCnt);
+				
+				/*
+				 * PageResolver pageResolver = new PageResolver(totalCnt, sc);
+				 * m.addAttribute("pr", pageResolver);
+				 */
+				
+				List<ClubDto> list = clubService.getClubSearchResultPage(sc);
+				m.addAttribute("list", list);
+				
 			}else {
 				return "redirect:/login";
 			}

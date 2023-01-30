@@ -1,14 +1,16 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.23
- * 업데이트 내용 : 동아리 가입 시 해당 동아리 총원 +1 하는 기능 추가
+ * 마지막 업데이트 : '23.01.30
+ * 업데이트 내용 : 동아리 검색 기능 및 페이지네이션 기능 구현
  * 기능 : 동아리 CRUD 기능 구현된 동아리 service file 
  */
 
 package com.youngtvjobs.ycc.club;
 
 import java.util.List;
+
+import com.youngtvjobs.ycc.common.SearchItem;
 
 
 public interface ClubService {
@@ -27,7 +29,12 @@ public interface ClubService {
 	
 	int joinClub(ClubDto clubDto) throws Exception;//동아리 가입하는 insert기능
 	
+	int getAllClubSearchResultCnt(SearchItem sc) throws Exception;
+	List<ClubDto> getAllClubSearchResultPage(SearchItem sc) throws Exception;
 	
 	int BoardWrite(ClubDto clubDto)throws Exception;
+	
+	int getClubSearchResultCnt(ClubSearchItem sc) throws Exception;
+	List<ClubDto> getClubSearchResultPage(ClubSearchItem sc) throws Exception; 
 }
 

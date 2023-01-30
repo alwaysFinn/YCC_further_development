@@ -1,8 +1,8 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.23
- * 업데이트 내용 : 동아리 가입 시 해당 동아리 총원 +1하는 기능 추가
+ * 마지막 업데이트 : '23.01.30
+ * 업데이트 내용 : 동아리 검색 기능 및 페이지네이션 기능 구현
  * 기능 : 동아리 CRUD 기능 구현된 동아리 DaoImpl로 clubmapper와 연결됨 
  */
 
@@ -16,6 +16,8 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.youngtvjobs.ycc.common.SearchItem;
 
 @Repository
 public class ClubDaoImpl implements ClubDao{
@@ -77,10 +79,33 @@ public class ClubDaoImpl implements ClubDao{
 		
 		return session.update(namespace + "clubMemberPlus", map);
 	}
+	
+	@Override
+	public int allClubSearchResultCnt(SearchItem sc) throws Exception {
+		return session.selectOne(namespace + "allClubSearchResultCnt", sc);
+	}
 
+	@Override
+	public List<ClubDto> allClubSearchSelectPage(SearchItem sc) throws Exception {
+		return session.selectList(namespace + "allClubSearchResultPage", sc);
+	}
+
+	//동아리 상세 페이지
 	@Override
 	public int clubBoardWrite(ClubDto clubDto) throws Exception {
 		return session.insert(namespace + "clubBoardWrite", clubDto);
 	}
+
+	@Override
+	public int clubSearchResultCnt(ClubSearchItem sc) throws Exception {
+		return session.selectOne(namespace + "clubBoardSearchResultCnt", sc);
+	}
+
+	@Override
+	public List<ClubDto> clubSearchSelectPage(ClubSearchItem sc) throws Exception {
+		return session.selectList(namespace + "clubBoardSearchPage", sc);
+	}
+
+	
 
 }

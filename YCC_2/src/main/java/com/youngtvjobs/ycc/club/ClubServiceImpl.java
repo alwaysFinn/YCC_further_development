@@ -1,8 +1,8 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.23
- * 업데이트 내용 : 동아리 가입 시 총원 +1기능 추가
+ * 마지막 업데이트 : '23.01.30
+ * 업데이트 내용 : 동아리 검색 기능 및 페이지네이션 기능 구현
  * 기능 : 동아리 CRUD 기능 구현된 동아리 serviceImpl로 clubDao와 연결됨 
  */
 
@@ -14,6 +14,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.youngtvjobs.ycc.common.SearchItem;
 
 @Service
 public class ClubServiceImpl implements ClubService{
@@ -75,9 +77,31 @@ public class ClubServiceImpl implements ClubService{
 		clubDao.updateClubMemberCnt(clubDto.getClub_id(), 1);// 동아리 가입 시 동아리 총원 +1 동시에 진행되게 설정
 		return clubDao.joinClub(clubDto);
 	}
+	
+	@Override
+	public int getAllClubSearchResultCnt(SearchItem sc) throws Exception {
+		return clubDao.allClubSearchResultCnt(sc);
+	}
+
+	@Override
+	public List<ClubDto> getAllClubSearchResultPage(SearchItem sc) throws Exception {
+		return clubDao.allClubSearchSelectPage(sc);
+	}
 
 	@Override
 	public int BoardWrite(ClubDto clubDto) throws Exception {
 		return clubDao.clubBoardWrite(clubDto);
 	}
+
+	@Override
+	public int getClubSearchResultCnt(ClubSearchItem sc) throws Exception {
+		return clubDao.clubSearchResultCnt(sc);
+	}
+
+	@Override
+	public List<ClubDto> getClubSearchResultPage(ClubSearchItem sc) throws Exception {
+		return clubDao.clubSearchSelectPage(sc);
+	}
+
+	
 }

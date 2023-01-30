@@ -1,8 +1,8 @@
 
  <!-- 작성자 : alwaysFinn(김지호)
  	  최초 작성일 : '23.01.09
- 	  마지막 업데이트 : '23.01.29
- 	  업데이트 내용 : 동아리 게시글 작성시 url에 파라미터로 club_id도 같이 보냄
+ 	  마지막 업데이트 : '23.01.30
+ 	  업데이트 내용 : 동아리 게시판 하단부 페이지네이션 기능 및 검색 기능 구현 
  	  기능 : 동아리 생성 페이지 view 파일 
  -->
 
@@ -37,7 +37,6 @@
 			<div id="club_info" class="text-center">  
 				${clubDetail[0].club_info }
 			</div>
-			<%-- <c:out value="${clubDetail.club_info}"/> --%>
 		</div>
 		<hr>
 	<div class="Section_Club_Board">
@@ -143,7 +142,7 @@
 					</div>
 					<!-- 검색버튼 -->
 					<div class="col-sm-auto px-1">
-						<input type="submit" id="search_button" class="btn btn-secondary"  value="검색" >
+						<input type="submit" id="search_button" class="btn btn-primary"  value="검색" >
 					</div>
 	 			</div>
 	 		</form>
@@ -167,9 +166,13 @@
 			form.attr("method", "post")
 			form.submit()
         	
-        	
-    	
-	})
+		})
+	
+		$("#regiBtn").on("click", function() {
+				if(!confirm("해당 동아리에 가입 하시겠습니까?")) return
+				
+				location.href = "<c:url value='/course/regcomplete${pr.sc.queryString }&course_id=${courseDto.course_id }' />"
+			})
 
 
 		

@@ -1,15 +1,16 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.20
- * 업데이트 내용 : 접속한 user가 해당 동아리에 가입한 사람인지 아닌지 확인하는 기능 추가
- * 				동아리 생성과 동시에 master가 해당 동아리에 가입하게 되는 기능 추가
+ * 마지막 업데이트 : '23.01.30
+ * 업데이트 내용 : 동아리 검색 기능 및 페이지네이션 기능 구현
  * 기능 : 동아리 CRUD 기능 구현된 동아리 Dao file 
  */
 
 package com.youngtvjobs.ycc.club;
 
 import java.util.List;
+
+import com.youngtvjobs.ycc.common.SearchItem;
 
 public interface ClubDao {
 	
@@ -28,6 +29,12 @@ public interface ClubDao {
 	int joinClub(ClubDto clubDto) throws Exception; //동아리 가입
 	int updateClubMemberCnt(Integer club_id, int cnt) throws Exception;//동아리 가입 시 총원 +1
 	
+	int allClubSearchResultCnt(SearchItem sc) throws Exception; //클럽 메인 화면 모든 클럽 보여주는 기능
+	List<ClubDto> allClubSearchSelectPage(SearchItem sc) throws Exception; // 모든 클럽 검색 결과
+	
+	//클럽 게시판 
 	int clubBoardWrite(ClubDto clubDto) throws Exception;	// 클럽 게시판 작성
+	int clubSearchResultCnt(ClubSearchItem sc) throws Exception; // 검색 결과 갯수
+	List<ClubDto> clubSearchSelectPage(ClubSearchItem sc) throws Exception; // 검색 결과 페이지
 	
 }

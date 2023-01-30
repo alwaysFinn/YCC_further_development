@@ -7,8 +7,8 @@
 <!--
 	 작성자 : alwaysFinn(김지호)
 	 최초 작성일 : '23.01.06
-	 마지막 업데이트 : '23.01.28
-	 업데이트 내용 : 동아리 게시글 작성 및 업데이트 sql문 추가
+	 마지막 업데이트 : '23.01.30
+	 업데이트 내용 : 검색 기능 구현
 	 기능 : 동아리 불러오기 기능 구현된 동아리 mapper로 DB와 연결됨
  --> 
 <mapper namespace="com.youngtvjobs.ycc.club.clubMapper" >
@@ -37,8 +37,8 @@
 	<!-- 동아리 새로 생성하는 insert -->
 	<insert id="createClub" parameterType="ClubDto">
 		INSERT INTO club
-		(club_title, club_create_time, club_info, club_master_id, club_member)
-		VALUES(#{club_title}, now(), #{club_info}, #{club_master_id}, 1)
+		(club_title, club_create_time, club_info, club_master_id, club_master_nm, club_member)
+		VALUES(#{club_title}, now(), #{club_info}, #{club_master_id}, #{club_master_nm}, 0)
 	</insert>
 	
 	<!-- 유효성 체크 #1 이미 동아리 master인 유저가 또 동아리를 생성하는 것을 막기 위한 유효성 체크 -->
@@ -59,6 +59,7 @@
 		where club_id = #{club_id}	
 	</select>
   
+  	<!-- 해당 동아리의 멤버인지 아닌지 체크하는 sql문 -->
   	<select id="clubMemberYn" parameterType="ClubDto" resultType="int">
   		select count(*)
 		from club_member
@@ -78,26 +79,40 @@
 		WHERE club_id = #{club_id}
 	</update>
 	
-	<select id="selectBoardFromClub" parameterType="int" resultType="CLubDto">
+	<select id="selectBoardFromClub" parameterType="int" resultType="ClubDto">
   		select *
 		from club_board
 		where club_id = #{club_id}
   	</select>
-  	
-  	<sql id="searchCondition">
+
+	<!--동아리 메인 페이지 검색 기능 -->  	
+  	<sql id="searchClubCondition">
   		<choose>
   			<when test='option=="T"'>
-  				AND club_article_title LIKE concat('%', #{keyword}, '%')
+  				AND club_title LIKE concat('%', #{keyword}, '%')
   			</when>
-  			<when test='option=="W"'>
-  				AND user_id LIKE concat('%', #{keyword}, '%')
+  			<when test='option=="CM"'>
+  				AND club_master_nm LIKE concat('%', #{keyword}, '%')
   			</when>
-  			<otherwise>
-  				AND (club_article_title LIKE concat('%', #{keyword}, '%')
-  				OR club_article_contents LIKE concat('%', #{keyword}, '%'))
-  			</otherwise>
   		</choose>
   	</sql>
+  	
+  	<select id="allClubSearchResultCnt" parameterType="SearchItem" resultType="int">
+  		SELECT count(*) 
+		FROM club
+		WHERE true 
+		<include refid="searchClubCondition" />
+	</select>
+	
+	<select id="allClubSearchResultPage" parameterType="SearchItem" resultType="ClubDto">
+		SELECT club_title, club_info, club_master_id, club_master_nm, club_create_time, club_id
+		FROM club
+		WHERE true 
+		<include refid="searchClubCondition" />		
+		order by club_create_time desc, club_id desc 
+		limit #{pageSize} offset #{offset}
+	</select>
+  	
   	
   	<!-- 동아리 게시판 글쓰기 insert -->
   	<insert id="clubBoardWrite" parameterType="ClubDto">
@@ -113,6 +128,38 @@
 		WHERE club_article_id=#{club_article_id}
 		AND user_id=#{user_id}
   	</update>
+  	
+  	<!-- 동아리 상세 페이지 검색기능(게시물) -->
+  	<sql id="searchClubBoardCondition">
+  		<choose>
+  			<when test='option=="BT"'>
+  				AND club_article_title LIKE concat('%', #{keyword}, '%')
+  			</when>
+  			<when test='option=="BW"'>
+  				AND user_id LIKE concat('%', #{keyword}, '%')
+  			</when>
+  			<otherwise>
+  				AND (club_article_title LIKE concat('%', #{keyword}, '%')
+  				OR club_article_content LIKE concat('%', #{keyword}, '%'))
+  			</otherwise>
+  		</choose>
+  	</sql>
+  	
+  	<select id="clubBoardSearchResultCnt" parameterType="SearchItem" resultType="int">
+  		SELECT count(*) 
+		FROM club_board
+		WHERE true 
+		<include refid="searchClubBoardCondition" />
+	</select>
+  	
+  	<select id="clubBoardSearchPage" parameterType="SearchItem" resultType="ClubDto">
+		SELECT club_article_id, club_article_title, club_article_content, club_board_upload_time, club_article_viewcnt, club_id, user_id
+		FROM club_board
+		WHERE true 
+		<include refid="searchClubBoardCondition" />		
+		order by club_board_upload_time desc, club_article_id desc 
+		limit #{pageSize} offset #{offset}		
+	</select>
   	
 	
 </mapper>

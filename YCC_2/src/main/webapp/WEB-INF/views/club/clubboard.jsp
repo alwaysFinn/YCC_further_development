@@ -33,7 +33,7 @@
    					<input type="hidden" id="club_id" name="club_id" value="${club_id}">
    					<input type="text" class="form-control mb-3" id="title" name="club_article_title"
    					 placeholder="제목을 입력해주세요">
-    				<textarea class="summernote mb-5" id="contents" name="club_article_contents" readonly>
+    				<textarea class="summernote mb-5" id="contents" name="club_article_contents">
     				</textarea>
     				
 				<!-- summernote 업로드 -->

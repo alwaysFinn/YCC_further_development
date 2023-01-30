@@ -1,8 +1,8 @@
 
  <!-- 작성자 : alwaysFinn(김지호)
  	  최초 작성일 : '23.01.09
- 	  마지막 업데이트 : '23.01.14
- 	  업데이트 내용 : 동아리 생성 페이지 javascript 추가
+ 	  마지막 업데이트 : '23.01.30
+ 	  업데이트 내용 : 유효성 검사 (nullcheck) 기능 추가
  	  기능 : 동아리 생성 페이지 view 파일 
  -->
 
@@ -19,7 +19,7 @@
 	    <!-- head & meta tag include -->
     <%@include file="/WEB-INF/views/metahead.jsp"%>
 <meta charset="UTF-8">
-<title>동아리 상세보기</title>
+<title>동아리 생성하기</title>
 </head>
 <body>
 	    <!-- include header -->
@@ -75,11 +75,20 @@
 	</div>
 	<script type="text/javascript">
 	$(document).ready(function () {
+		
+		let msg = "${msg}"
+		if(msg == "CREATE_FAIL") alert("동아리 생성에 실패했습니다.")
+		
+		
 		$("#submitBtn").on("click", function(){
 			
-			if($("#club_title").val() ==''){
+			if($("#club_title").val() == ''||$("#club_title").val() == null){
 				alert("동아리 명을 입력해주세요");
 				$("#club_title").focus();
+				return false;
+			}else if($("#club_info").val() == ''||$("#club_info").val() == null){
+				alert("동아리 소개를 입력해주세요.");
+				$("#club_info").focus();
 				return false;
 			}else{
 		       	let form = $("#form")

@@ -1,8 +1,8 @@
 
  <!-- 작성자 : alwaysFinn(김지호)
  	  최초 작성일 : '23.01.06
- 	  마지막 업데이트 : '23.01.17
- 	  업데이트 내용 : login을 했는지, 만든 동아리가 있는지 없는지에 분기를 줘서 출력되는 문구 차별화
+ 	  마지막 업데이트 : '23.01.30
+ 	  업데이트 내용 : 페이지 하단 페이지네이션 기능 추가
  	  기능 : 동아리 main페이지 view 파일 
  -->
 
@@ -182,14 +182,14 @@
 		          </tr>
 		        </thead>
 		        <tbody>
-			        <c:forEach var="list" items="${list }">
+			        <c:forEach var="clubDto" items="${list}">
 			        	<tr>
-				            <td class="text-start text-truncate">
-				            	<a name="club_title" style="text-decoration: none; color: black;" href="<c:url value="/club/detail?id=${list.club_id }"/> ">${list.club_title }</a>
+				            <td class="text-center text-truncate">
+				            	<a name="club_title" style="text-decoration: none; color: black;" href="<c:url value="/club/detail${pr.sc.queryString}&id=${clubDto.club_id}"/> ">${clubDto.club_title}</a>
 				            </td>	
-			  	            <td>${list.club_master_id }</td>
-				            <td>${list.club_member }</td>
-				            <td>${list.club_create_time }</td>
+			  	            <td>${clubDto.club_master_id }</td>
+				            <td>${clubDto.club_member }</td>
+				            <td>${clubDto.club_create_time }</td>
 			          	</tr>
 			        </c:forEach>
 		        </tbody>
@@ -198,34 +198,46 @@
 	    </form>
 	    
 	    
-    <!-- 페이지 네비게이션 -->
-    <nav aria-label="Page navigation example">
-      <ul class="pagination justify-content-center">
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <div class="paging-container">
+			<ul class="pagination pt-3" style="justify-content: center;">
+				<c:if test="${totalCnt == null || totalCnt == 0}">
+					<div>게시물이 없습니다.</div>
+				</c:if>
+				<c:if test="${totalCnt != null || totalCnt != 0}">
+					<c:if test="${pr.showPrev}">
+						<a class="page-link " href="/ycc/club${pr.sc.getQueryString(pr.beginPage-1)}">이전</a>
+					</c:if>
+					<c:forEach var="i" begin="${pr.beginPage}" end="${pr.endPage}">
+					<c:if test="${pr.sc.page == i }">
+						<c:if test="${pr.sc.page > 0 }">
+							<li class="page-item active"><a class="page-link" href="/ycc/club${pr.sc.getQueryString(i)}">${i}</a></li>
+						</c:if>
+					</c:if>
+					<c:if test="${pr.sc.page != i }">
+						<c:if test="${pr.sc.page > 0 }">
+							<li class="page-item"><a class="page-link" href="/ycc/club${pr.sc.getQueryString(i)}">${i}</a></li>
+						</c:if>
+					</c:if>
+					</c:forEach>
+					<c:if test="${pr.showNext }">
+						<a class="page-link" href="<c:url value="/club${pr.sc.getQueryString(pr.endPage + 1) }" />">다음</a>
+					</c:if>
+				</c:if>
+			</ul>
+		</div>
+		<!-- 페이징 끝 -->
     <button type="button" class="btn btn-primary " id="clubCreateBtn">동아리 생성</button>
     
     <!-- 검색 영역 -->
 	    <div class="d-flex flex-row mx-auto w-75">
-	      <select class="form-select form-select-sm mx-2 w-25" aria-label=".form-select-sm example">
-	        <option value="1">동아리 이름</option>
-	        <option value="2">동아리장</option>
-	      </select>
-	      <input type="text" class="form-control mx-2 w-50" aria-label="title" aria-describedby="basic-addon1">
-	      <button type="button" class="btn btn-primary mx-2" style="width: 80px">검색</button>
+	    	<form action="<c:url value="/club" />" class="search-form" method="get">
+				<select class="form-select" name="option" style="width: 150px;">
+					<option value="T" ${pr.sc.option == 'T' ? "selected" : ""}>동아리</option>
+					<option value="CM" ${pr.sc.option == 'CM' || pr.sc.option == '' ? "selected" : ""}>동아리장</option>
+				</select>
+		      <input type="text" class="form-control mx-2 w-50" name="keyword" value="${param.keyword}"aria-label="title" aria-describedby="basic-addon1">
+		      <input type="submit" id="search_button" class="btn btn-primary mx-2" style="width: 80px" value="검색">
+	      </form>
 	    </div>
     </div>
    
@@ -236,8 +248,10 @@
 		$(document).ready(function() {
 			
 			let msg = "${msg}"
-			if(msg == "JOIN_SUCCESS") alert("성공적으로 가입되었습니다")
-			if(msg == "JOIN_FAIL") alert("동아리 가입에 실패하였습니다 잠시 후 다시 시도해주세요")	
+			if(msg == "JOIN_SUCCESS") alert("성공적으로 가입되었습니다");
+			if(msg == "JOIN_FAIL") alert("동아리 가입에 실패하였습니다 잠시 후 다시 시도해주세요");
+			if(msg == "CREATE_OK") alert("동아리가 성공적으로 생성되었습니다.");
+			if(msg == "CREATE_ERR") alert("계정당 1개의 동아리만 만들 수 있습니다.");
 
 			$("#clubCreateBtn").on("click", function(){
 				if(${myMsList eq '[]'}){

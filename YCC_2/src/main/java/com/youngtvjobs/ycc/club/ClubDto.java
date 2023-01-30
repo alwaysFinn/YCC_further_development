@@ -1,8 +1,8 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.06
- * 업데이트 내용 : dto 생성 및 컬럼들 추가
+ * 마지막 업데이트 : '23.01.30
+ * 업데이트 내용 : club_master_nm 추가
  */
 
 package com.youngtvjobs.ycc.club;
@@ -23,6 +23,7 @@ public class ClubDto {
 	private String club_create_time;	//동아리 생성 날짜
 	private String club_info;	//동아리 설명
 	private String club_master_id;	//동아리장 아이디
+	private String club_master_nm;	//동아리장 이름
 	private int club_member;	//동아리 멤버 수
 	private String club_status;	//동아리 활성화 비활성화 여부
 	//end of club table

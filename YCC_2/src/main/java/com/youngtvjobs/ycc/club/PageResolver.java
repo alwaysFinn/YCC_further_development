@@ -10,7 +10,7 @@ package com.youngtvjobs.ycc.club;
 
 public class PageResolver {
 	
-	private SearchItem sc;
+	private ClubSearchItem sc;
 	
 	private int totalCnt;					// 게시물 총합
 	public final int NAV_SIZE = 10;			// ? -> pageSize랑 다른점? / 하단에 페이지 몇개씩 보여줄지 1 2 3 4 , ... 10
@@ -21,21 +21,21 @@ public class PageResolver {
 	private boolean showPrev = false;		// ◀를 보여줄 지 여부(beginPage == 1 ? false : true)		-> 시작 페이지가 1이면 더 이상 이전 페이지가 없고 게시물이 없으므로 false, 1이 아닐 경우 이전에 게시물을 모아놓은 페이지가 있다는 뜻이므로 true 
 	
 	public PageResolver(int totalCnt, Integer page) {
-		this(totalCnt, new SearchItem(page, 10));
+		this(totalCnt, new ClubSearchItem(page, 10));
 	}
 	
 	public PageResolver(int totalCnt, Integer page, Integer pageSize) {
-		this(totalCnt, new SearchItem(page, pageSize));
+		this(totalCnt, new ClubSearchItem(page, pageSize));
 	}
 	
-	public PageResolver(int totalCnt, SearchItem sc) {
+	public PageResolver(int totalCnt, ClubSearchItem sc) {
 		this.totalCnt = totalCnt;
 		this.sc = sc;
 		
 		doPaging(totalCnt, sc);
 	}
 
-	public void doPaging(int totalCnt, SearchItem sc) {
+	public void doPaging(int totalCnt, ClubSearchItem sc) {
 		this.totalPage = totalCnt / sc.getPageSize() + (totalCnt % sc.getPageSize() == 0? 0 : 1);	//전체 페이지 갯수
 		this.sc.setPage(Math.min(sc.getPage(), totalPage));	//page가 totalPage보다 크지 않음
 		this.beginPage = (this.sc.getPage()-1) / NAV_SIZE * NAV_SIZE + 1;	//첫 페이지 숫자 11 -> 11, 10-> 1, 15 -> 11
@@ -61,11 +61,11 @@ public class PageResolver {
 				+ beginPage + ", endPage=" + endPage + ", showNext=" + showNext + ", showPrev=" + showPrev + "]";
 	}
 
-	public SearchItem getSc() {
+	public ClubSearchItem getSc() {
 		return sc;
 	}
 
-	public void setSc(SearchItem sc) {
+	public void setSc(ClubSearchItem sc) {
 		this.sc = sc;
 	}
 

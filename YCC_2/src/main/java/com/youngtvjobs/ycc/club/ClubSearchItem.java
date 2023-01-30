@@ -12,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import static java.util.Objects.requireNonNullElse;
 import static java.lang.Math.*;
 
-public class SearchItem {
+public class ClubSearchItem {
 
 	public static final int DEFAULT_PAGE_SIZE = 10;	// 한 페이지에 보여줄 게시물 수 (기본 설정) 
 	public static final int MIN_PAGE_SIZE = 5;		// 최소 게시글 수
@@ -23,16 +23,17 @@ public class SearchItem {
 	private String option = "";
 	private String keyword = "";
 	private Integer offset;
+	//club_id 추가할 것
 	
-	public SearchItem() {
+	public ClubSearchItem() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public SearchItem(Integer page, Integer pageSize) {
+	public ClubSearchItem(Integer page, Integer pageSize) {
 		this(page, pageSize, "", "");
 	}
 	
-	public SearchItem(Integer page, Integer pageSize, String option, String keyword) {
+	public ClubSearchItem(Integer page, Integer pageSize, String option, String keyword) {
 		this.page = page;
 		this.pageSize = pageSize;
 		this.option = option;
@@ -43,6 +44,7 @@ public class SearchItem {
 		return getQueryString(page);
 	}
 
+	//club_id 추가해서 계속 담고 가게끔
 	public String getQueryString(Integer page) {
 		return UriComponentsBuilder.newInstance()
 				.queryParam("page", page)
