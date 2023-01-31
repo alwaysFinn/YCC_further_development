@@ -28,7 +28,14 @@
   		<!--container start-->
   		<form id="form" method="post" action="" >
   			<div class="container mt-5">
-    			<h3 class="posttitle pt-3">글쓰기</h3>
+	  			<c:choose>
+					<c:when test ="${mode eq 'new'}">
+						<h3 class="posttitle pt-3">글쓰기</h3>
+					</c:when>
+					<c:when test ="${mode eq 'mod'}">
+						<h3 class="posttitle pt-3">수정하기</h3>
+					</c:when>
+				</c:choose>
    				<hr>
    					<input type="hidden" id="club_id" name="club_id" value="${club_id}">
    					<input type="text" class="form-control mb-3" id="title" name="club_article_title"

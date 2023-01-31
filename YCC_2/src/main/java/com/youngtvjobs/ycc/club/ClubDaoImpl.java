@@ -100,6 +100,11 @@ public class ClubDaoImpl implements ClubDao{
 	public int clubBoardWrite(ClubDto clubDto) throws Exception {
 		return session.insert(namespace + "clubBoardWrite", clubDto);
 	}
+	
+	@Override
+	public List<ClubDto> clubBoardRead(ClubDto clubDto) throws Exception {
+		return session.selectList(namespace + "clubBoardRead", clubDto);
+	}
 
 	@Override
 	public int clubSearchResultCnt(ClubSearchItem sc) throws Exception {
@@ -110,6 +115,8 @@ public class ClubDaoImpl implements ClubDao{
 	public List<ClubDto> clubSearchSelectPage(ClubSearchItem sc) throws Exception {
 		return session.selectList(namespace + "clubBoardSearchPage", sc);
 	}
+
+	
 
 	
 

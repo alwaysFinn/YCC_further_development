@@ -98,6 +98,11 @@ public class ClubServiceImpl implements ClubService{
 	public int BoardWrite(ClubDto clubDto) throws Exception {
 		return clubDao.clubBoardWrite(clubDto);
 	}
+	
+	@Override
+	public List<ClubDto> BoardRead(ClubDto clubDto) throws Exception {
+		return clubDao.clubBoardRead(clubDto);
+	}
 
 	@Override
 	public int getClubSearchResultCnt(ClubSearchItem sc) throws Exception {
@@ -108,6 +113,8 @@ public class ClubServiceImpl implements ClubService{
 	public List<ClubDto> getClubSearchResultPage(ClubSearchItem sc) throws Exception {
 		return clubDao.clubSearchSelectPage(sc);
 	}
+
+	
 
 	
 

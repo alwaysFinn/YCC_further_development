@@ -122,6 +122,11 @@
 	</select>
   	
   	
+  	<sql id="clubBoard">
+  		SELECT *
+  		FROM club_board
+  	</sql>
+  	
   	<!-- 동아리 게시판 글쓰기 insert -->
   	<insert id="clubBoardWrite" parameterType="ClubDto">
   		INSERT INTO club_board
@@ -136,6 +141,13 @@
 		WHERE club_article_id=#{club_article_id}
 		AND user_id=#{user_id}
   	</update>
+  	
+  	<!-- 동아리 게시판 상세보기 select -->
+  	<select id="clubBoardRead" parameterType="ClubDto" resultType="ClubDto">
+  		<include refid="clubBoard" />
+  		WHERE club_id = #{club_id}
+  		AND club_article_id = #{club_article_id}
+  	</select>
   	
   	<!-- 동아리 상세 페이지 검색기능(게시물) -->
   	<sql id="searchClubBoardCondition">

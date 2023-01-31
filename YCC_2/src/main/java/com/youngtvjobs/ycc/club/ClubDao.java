@@ -35,6 +35,7 @@ public interface ClubDao {
 	
 	//클럽 게시판 
 	int clubBoardWrite(ClubDto clubDto) throws Exception;	// 클럽 게시판 작성
+	List<ClubDto> clubBoardRead(ClubDto clubDto) throws Exception; //클럽 게시판 상세보기
 	int clubSearchResultCnt(ClubSearchItem sc) throws Exception; // 검색 결과 갯수
 	List<ClubDto> clubSearchSelectPage(ClubSearchItem sc) throws Exception; // 검색 결과 페이지
 	

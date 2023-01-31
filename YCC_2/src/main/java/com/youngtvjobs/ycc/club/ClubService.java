@@ -34,6 +34,7 @@ public interface ClubService {
 	List<ClubDto> getAllClubSearchResultPage(SearchItem sc) throws Exception;
 	
 	int BoardWrite(ClubDto clubDto)throws Exception;
+	List<ClubDto> BoardRead(ClubDto clubDto)throws Exception;
 	
 	int getClubSearchResultCnt(ClubSearchItem sc) throws Exception;
 	List<ClubDto> getClubSearchResultPage(ClubSearchItem sc) throws Exception; 

@@ -61,7 +61,7 @@
 			<c:forEach var="clubDto" items="${cbList }">
 				<tr>
 					<td class="title"  >
-						<a style="text-decoration: none; color: black;" href="<c:url value="/club/board${pr.sc.queryString }&article_id=${clubDto.club_article_id  }"/>">
+						<a style="text-decoration: none; color: black;" href="<c:url value="/club/board/view?id=${clubDto.club_id }&article_id=${clubDto.club_article_id  }"/>"><!-- view${pr.sc.queryString}&id=~~ -->
 							${clubDto.club_article_title }
 		      			</a>
 					</td>
