@@ -1,8 +1,8 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.30
- * 업데이트 내용 : 동아리 검색 기능 및 페이지네이션 기능 구현
+ * 마지막 업데이트 : '23.01.31
+ * 업데이트 내용 : user_id == club_master_id 체크하는 기능 추가
  * 기능 : 동아리 CRUD 기능 구현된 동아리 DaoImpl로 clubmapper와 연결됨 
  */
 
@@ -67,6 +67,11 @@ public class ClubDaoImpl implements ClubDao{
 	}
 
 	@Override
+	public int clubMasterYn(ClubDto clubDto) throws Exception {
+		return session.selectOne(namespace + "clubMasterYn", clubDto);
+	}
+	
+	@Override
 	public int joinClub(ClubDto clubDto) throws Exception {
 		return session.insert(namespace + "joinClub", clubDto);
 	}
@@ -105,6 +110,8 @@ public class ClubDaoImpl implements ClubDao{
 	public List<ClubDto> clubSearchSelectPage(ClubSearchItem sc) throws Exception {
 		return session.selectList(namespace + "clubBoardSearchPage", sc);
 	}
+
+	
 
 	
 

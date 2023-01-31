@@ -1,8 +1,8 @@
 
  <!-- 작성자 : alwaysFinn(김지호)
  	  최초 작성일 : '23.01.09
- 	  마지막 업데이트 : '23.01.30
- 	  업데이트 내용 : 동아리 게시판 하단부 페이지네이션 기능 및 검색 기능 구현 
+ 	  마지막 업데이트 : '23.01.31
+ 	  업데이트 내용 : 동아리 장, 동아리 멤버, 가입하지 않은 인원을 기준으로 페이지 하단 보여지는 버튼 다르게 설정 
  	  기능 : 동아리 생성 페이지 view 파일 
  -->
 
@@ -76,7 +76,15 @@
 		 <sec:authentication property="principal" var="pinfo"/>
 		 <sec:authorize access="isAuthenticated()">
 		 <c:choose>
-			<c:when test ="${mode eq 'Y'}">
+		 	<c:when test ="${mode eq 'CMT'}">
+			<div class="row">
+				<div class="col">
+					<a id="secessionBtn" class="btn btn-danger ms-3" style="float:right" onclick=""role="button">동아리 비활성화</a>
+					<a id="writeBtn" class="btn btn-primary " style="float:right" onclick='location.href="<c:url value='/club/board/write?id=${clubDetail[0].club_id }' />" 'role="button">작성하기</a>    	
+			 	</div>
+			</div>
+			</c:when>
+			<c:when test ="${mode eq 'CM'}">
 			<div class="row">
 				<div class="col">
 					<a id="secessionBtn" class="btn btn-danger ms-3" style="float:right" onclick=""role="button">탈퇴하기</a>

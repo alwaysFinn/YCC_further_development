@@ -1,8 +1,8 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.30
- * 업데이트 내용 : 동아리 검색 기능 및 페이지네이션 기능 구현
+ * 마지막 업데이트 : '23.01.31
+ * 업데이트 내용 : 동아리 장인지 아닌지 체크하는 기능 추가
  * 기능 : 동아리 불러오기 기능 구현된 동아리 controller 
  */
 
@@ -156,11 +156,14 @@ public class ClubController
 				List<ClubDto> list = clubService.getClubSearchResultPage(sc);
 				m.addAttribute("list", list);
 				
+				clubDto.setClub_master_id(user_id); // for chkClubMaster()
 			}else {
 				return "redirect:/login";
 			}
 			if(clubService.chkClubMember(clubDto) == 1) {
-				m.addAttribute("mode", "Y");
+				m.addAttribute("mode", "CM");
+			}else if(clubService.chkClubMaster(clubDto) == 1) {
+				m.addAttribute("mode", "CMT");
 			}else {
 				m.addAttribute("mode", "N");
 			}

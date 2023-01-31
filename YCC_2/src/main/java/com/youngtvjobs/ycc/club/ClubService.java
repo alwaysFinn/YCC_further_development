@@ -1,8 +1,8 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.30
- * 업데이트 내용 : 동아리 검색 기능 및 페이지네이션 기능 구현
+ * 마지막 업데이트 : '23.01.31
+ * 업데이트 내용 : user_id == club_master_id 체크하는 기능 추가
  * 기능 : 동아리 CRUD 기능 구현된 동아리 service file 
  */
 
@@ -26,6 +26,7 @@ public interface ClubService {
 	List<ClubDto> selectClubBoard(int club_id) throws Exception; // 선택한 동아리의 id에 따라 해당 동아리의 게시글 불러오는 기능
 
 	int chkClubMember(ClubDto clubDto) throws Exception; //해당 동아리에 가입한 사람인지 아닌지 체크
+	int chkClubMaster(ClubDto clubDto) throws Exception; //해당 동아리의 장인지 아닌지 체크
 	
 	int joinClub(ClubDto clubDto) throws Exception;//동아리 가입하는 insert기능
 	

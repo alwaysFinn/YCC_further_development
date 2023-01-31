@@ -185,7 +185,7 @@
 			        <c:forEach var="clubDto" items="${list}">
 			        	<tr>
 				            <td class="text-center text-truncate">
-				            	<a name="club_title" style="text-decoration: none; color: black;" href="<c:url value="/club/detail${pr.sc.queryString}&id=${clubDto.club_id}"/> ">${clubDto.club_title}</a>
+				            	<a name="club_title" style="text-decoration: none; color: black;" href="<c:url value="/club/detail?id=${clubDto.club_id}"/> ">${clubDto.club_title}</a>
 				            </td>	
 			  	            <td>${clubDto.club_master_id }</td>
 				            <td>${clubDto.club_member }</td>
@@ -201,7 +201,7 @@
     <div class="paging-container">
 			<ul class="pagination pt-3" style="justify-content: center;">
 				<c:if test="${totalCnt == null || totalCnt == 0}">
-					<div>게시물이 없습니다.</div>
+					<div>동아리가 없습니다.</div>
 				</c:if>
 				<c:if test="${totalCnt != null || totalCnt != 0}">
 					<c:if test="${pr.showPrev}">
@@ -229,14 +229,22 @@
     <button type="button" class="btn btn-primary " id="clubCreateBtn">동아리 생성</button>
     
     <!-- 검색 영역 -->
-	    <div class="d-flex flex-row mx-auto w-75">
+	    <div class="container text-center">
 	    	<form action="<c:url value="/club" />" class="search-form" method="get">
-				<select class="form-select" name="option" style="width: 150px;">
-					<option value="T" ${pr.sc.option == 'T' ? "selected" : ""}>동아리</option>
-					<option value="CM" ${pr.sc.option == 'CM' || pr.sc.option == '' ? "selected" : ""}>동아리장</option>
-				</select>
-		      <input type="text" class="form-control mx-2 w-50" name="keyword" value="${param.keyword}"aria-label="title" aria-describedby="basic-addon1">
-		      <input type="submit" id="search_button" class="btn btn-primary mx-2" style="width: 80px" value="검색">
+	    		<div class="row justify-content-md-center pt-5 pb-5">
+	    			<div class="col-sm-auto px-1">
+						<select class="form-select" name="option" style="width: 120px;">
+							<option value="T" ${pr.sc.option == 'T' ? "selected" : ""}>동아리</option>
+							<option value="CM" ${pr.sc.option == 'CM' || pr.sc.option == '' ? "selected" : ""}>동아리장</option>
+						</select>
+					</div>
+					<div class="col-sm-auto px-1">
+						<input type="text" class="form-control" name="keyword" value="${param.keyword}" style="width: 340px;">
+					</div>
+					<div class="col-sm-auto px-1">
+						<input type="submit" id="search_button" class="btn btn-primary mx-2" value="검색">
+					</div>
+				</div>
 	      </form>
 	    </div>
     </div>
