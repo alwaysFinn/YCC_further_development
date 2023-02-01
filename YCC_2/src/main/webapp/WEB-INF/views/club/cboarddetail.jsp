@@ -18,13 +18,13 @@
 			<div class="container px-4">
 				
 					<h2 class="writing-header mb-3">
-						<a id="noticeList">게시글 읽기</a> 
+						<a id="cBoardList">게시글 읽기</a> 
 					</h2>
-				<form id="form" class="frm" action="ycc/board/post" method="post">
+				<form id="form" class="frm" action="ycc/club/board" method="post">
 					<div class="card mb-4">
 	    				<div class="card-body">
     						<!-- 게시글 정보 -->
-    						<input type="hidden" name="article_id" value="${cbdetail[0].club_article_id }">
+    						<!-- <input type="hidden" name="article_id" value="${cbdetail[0].club_article_id }"> -->
   							<h4 class="title" >${cbdetail[0].club_article_title }</h4>
   							<p class="writingInfo">작성자 : ${cbdetail[0].user_id} |
    								게시일 : <fmt:formatDate value="${cbdetail[0].club_board_upload_time }" pattern="yyyy-MM-dd" type="date"/> 
@@ -102,19 +102,8 @@
 
 	$(document).ready(function(){
 		
-		
-		//공지사항 클릭시 공지사항 첫 페이지로 이동 
-		$("#noticeList").on("click", function() {
-			location.href ="<c:url value='/board/notice'/>";
-		})
-		
-		$("#eventList").on("click", function() {
-		location.href ="<c:url value='/board/event'/>";
-		})
-		
-		
 		$("#listBtn").on("click", function() {
-			location.href ="<c:url value='/board/notice${searchItem.queryString}' />";
+			location.href ="<c:url value='/club/board${searchItem.queryString}' />";
 		})
 		
 		$("#modifyBtn").on("click", function() {
@@ -130,7 +119,7 @@
 			if(!confirm("정말로 삭제하시겠습니까?")) return;
 			
 			let form = $("#form")
-			form.attr("action","<c:url value='/board/remove${searchItem.queryString}' />")
+			form.attr("action","<c:url value='/club/remove${searchItem.queryString}' />")
 			form.attr("method", "post")
 			form.submit()
 		})	

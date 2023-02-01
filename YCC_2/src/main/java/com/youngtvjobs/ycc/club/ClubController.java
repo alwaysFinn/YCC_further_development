@@ -202,16 +202,15 @@ public class ClubController
 	@GetMapping("club/board/view")
 	public String boardView(HttpServletRequest request, RedirectAttributes rattr, Model m, ClubDto clubDto)
 	{
-		
-		
-		int club_id = Integer.parseInt(request.getParameter("id"));
-		System.out.println("club_id : "+club_id);
-		int club_article_id = Integer.parseInt(request.getParameter("article_id"));
-		System.out.println("club_article_id : "+club_article_id);
-		
-		
-		
+		String sclub_id = request.getParameter("id");
+		//HttpServletRequest를 꼭 Integer.parseInt를 해야하는지 다시 생각해볼것
 		try {
+			int club_id = Integer.parseInt(sclub_id);
+			System.out.println("club_id : "+club_id);
+			Integer club_article_id = Integer.parseInt(request.getParameter("article_id"));
+			System.out.println("club_article_id : "+club_article_id);
+			System.out.println(club_article_id.getClass());
+			
 			clubDto.setClub_id(club_id);
 			clubDto.setClub_article_id(club_article_id);
 			List<ClubDto> cbdetail = clubService.BoardRead(clubDto);
@@ -222,7 +221,7 @@ public class ClubController
 		}catch(Exception e) {
 			System.out.println("상세 게시글 접근 중 Exception 발생");
 			rattr.addFlashAttribute("msg", "삭제되었거나 없는 게시물입니다.");
-			return "redirect:/club/detail?id=" + club_id;
+			return "redirect:/club/detail?id=" + sclub_id;
 		}
 		
 		return "club/cboarddetail";
