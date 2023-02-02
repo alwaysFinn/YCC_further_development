@@ -244,15 +244,11 @@ public class ClubController
 	}
 	
 	@GetMapping("club/board/edit")
-	public String clubEdit(HttpServletRequest request, Model m, ClubDto clubDto)
+	public String clubEdit(HttpServletRequest request, Model m)
 	{
 		try {
 			
-			int club_id = Integer.parseInt(request.getParameter("id"));
 			int club_article_id = Integer.parseInt(request.getParameter("article_id"));
-			
-			clubDto.setClub_id(club_id);
-			clubDto.setClub_article_id(club_article_id);
 		/*
 		 * jsp에서 modBtn을 누르면 club_id, article_id를 가져와서 그걸 mapper로 비교, select 해온 결과를
 		 * jsp의 각 부분에 뿌려준다
@@ -260,7 +256,7 @@ public class ClubController
 		 * 
 		 * jsp에서는 수정하기 버튼 클릭 시 수정된 데이터들을 update로 다시 등록한다	
 		 */
-			List<ClubDto> list = clubService.BoardRead(clubDto);
+			List<ClubDto> list = clubService.BoardModRead(club_article_id);
 			m.addAttribute("list", list);
 			System.out.println(list);
 			m.addAttribute("mode", "mod");

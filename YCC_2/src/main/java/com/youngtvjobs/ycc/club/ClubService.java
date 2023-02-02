@@ -35,6 +35,7 @@ public interface ClubService {
 	
 	int BoardWrite(ClubDto clubDto)throws Exception;
 	List<ClubDto> BoardRead(ClubDto clubDto)throws Exception;
+	List<ClubDto> BoardModRead(int club_article_id)throws Exception; // 수정용 select
 	
 	int getClubSearchResultCnt(ClubSearchItem sc) throws Exception;
 	List<ClubDto> getClubSearchResultPage(ClubSearchItem sc) throws Exception; 

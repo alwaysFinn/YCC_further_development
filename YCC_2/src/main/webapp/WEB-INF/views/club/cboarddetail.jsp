@@ -118,7 +118,7 @@
 			let club_article_id = ${cbdetail[0].club_article_id }
 			let club_id = ${cbdetail[0].club_id }
 			let form = $("#form")
-			form.attr("action", "<c:url value='/club/board/edit?id=${cbdetail[0].club_id }&article_id=${cbdetail[0].club_article_id }' />")
+			form.attr("action", "<c:url value='/club/board/edit?article_id=${cbdetail[0].club_article_id }' />")
 			form.attr("method", "get")
 			form.submit()
 			})

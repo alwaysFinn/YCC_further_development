@@ -116,10 +116,10 @@ public class ClubDaoImpl implements ClubDao{
 		return session.selectList(namespace + "clubBoardSearchPage", sc);
 	}
 
-	
+	@Override
+	public List<ClubDto> clubBoardModRead(int club_article_id) throws Exception {
+		return session.selectList(namespace + "clubBoardERead", club_article_id);
+	}
 
-	
-
-	
 
 }

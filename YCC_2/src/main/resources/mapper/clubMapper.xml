@@ -91,7 +91,7 @@
   		select *
 		from club_board
 		where club_id = #{club_id}
-		order by club_board_upload desc
+		order by club_board_upload_time desc
   	</select>
 
 	<!--동아리 메인 페이지 검색 기능 -->  	
@@ -134,6 +134,13 @@
 		(club_article_title, club_article_content, club_board_upload_time, club_article_viewcnt, club_id, user_id)
 		VALUES(#{club_article_title}, #{club_article_content}, now(), 0, #{club_id}, #{user_id})
   	</insert>
+  	
+  	<!-- 동아리 게시판 수정하기 select -->
+  	<select id="clubBoardERead" parameterType="String" resultType="ClubDto">
+  		<include refid="clubBoard" />
+  		WHERE club_article_id = #{club_article_id}
+  	</select>
+  	
   	
   	<!-- 동아리 게시판 수정하기 update -->
   	<update id="clubBoardEdit" parameterType="ClubDto">

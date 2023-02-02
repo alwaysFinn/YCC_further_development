@@ -114,6 +114,11 @@ public class ClubServiceImpl implements ClubService{
 		return clubDao.clubSearchSelectPage(sc);
 	}
 
+	@Override
+	public List<ClubDto> BoardModRead(int club_article_id) throws Exception {
+		return clubDao.clubBoardModRead(club_article_id);
+	}
+
 	
 
 	
