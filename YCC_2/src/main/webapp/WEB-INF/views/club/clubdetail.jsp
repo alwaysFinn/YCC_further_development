@@ -40,6 +40,9 @@
 		</div>
 		<hr>
 	<div class="Section_Club_Board">
+		<form id="joinclub" method="post" action="" >
+			<input type="hidden" name="club_id" value=${clubDto.club_id }>
+		</form>
 		<h2 class="text-center mt-5">우리 동아리 게시판</h2>
 		<table class="table table-group-divider table table-striped table table-hover mt1" >
 			<colgroup>
@@ -95,7 +98,7 @@
 			<c:when test ="${mode eq 'N'}">
 			<div class="row">
 				<div class="col">
-					<a id="regiBtn" class="btn btn-primary " style="float:right" onclick=""role="button">가입하기</a>    	
+					<button id="regiBtn" type="submit" style="float:right" class="btn btn-primary">가입하기</button>
 			 	</div>
 			</div>
 			</c:when>
@@ -134,7 +137,7 @@
 	
 		<!-- 검색 -->
 		<div class="container text-center">
-			<form action="<c:url value= "/board/notice"/>" class="searchForm" method="get">
+			<form action="<c:url value= "/board/notice"/>" class="searchForm" id="clubsearch" method="get">
 				<div class="row justify-content-md-center pt-5 pb-5">
 					<div class = "col-sm-auto px-1">
 						<select class="form-select" name="option" style="width: 150px;">
@@ -165,25 +168,31 @@
 	$(document).ready(function(){
 		
 		let msg = "${msg}"
-			if(msg == "WRITE_OK") alert("글이 등록되었습니다.")
-		
+			if(msg == "WRITE_OK") alert("글이 등록되었습니다.");
+			if(msg == "READ_ERR") alert("삭제되었거나 없는 게시글입니다.");
+		/* 
+		function goPost(){
+		    let f = document.createElement('form');
+		    f.setAttribute('method', 'post');
+		    f.setAttribute('action', "<c:url value='/club/detail' />");
+		    document.body.appendChild(f);
+		    f.submit();
+		} */
+			
 		$("#regiBtn").on("click", function(){
-        	alert("해당 동아리에 가입합니다");
-        	let form = $("#form")
-			form.attr("action", "<c:url value='/club/clubDetail' />")
+			if(!confirm("해당 동아리에 가입 하시겠습니까?")) return
+        	let form = $("#joinclub")
+			form.attr("action", "<c:url value='/club/join' />")
 			form.attr("method", "post")
-			form.submit()
+			form.submit() 
         	
 		})
-	
-		$("#regiBtn").on("click", function() {
+		/* $("#regiBtn").on("click", function() {
 				if(!confirm("해당 동아리에 가입 하시겠습니까?")) return
 				
 				location.href = "<c:url value='/course/regcomplete${pr.sc.queryString }&course_id=${courseDto.course_id }' />"
-			})
+			}) */
 
-
-		
 	})
 </script>
 	

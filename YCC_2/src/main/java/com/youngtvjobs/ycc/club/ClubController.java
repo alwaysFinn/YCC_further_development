@@ -141,6 +141,7 @@ public class ClubController
 				
 				List<ClubDto> cbList = clubService.selectClubBoard(club_id);
 				m.addAttribute("cbList", cbList);
+				System.out.println("cbList : " + cbList);
 				
 				clubDto.setUser_id(user_id);
 				
@@ -175,9 +176,19 @@ public class ClubController
 	}
 	
 	//동아리 가입하기 클릭 시 작동하는 postmapping
-	@PostMapping("/club/detail")
-	public String clubDetail(ClubDto clubDto, RedirectAttributes rattr) {
+	@PostMapping("/club/join")
+	public String clubDetail(ClubDto clubDto, int club_id, RedirectAttributes rattr, Authentication auth, HttpServletRequest request) {
 		try {
+
+			String user_id = auth.getName();
+			
+			CustomUser user = (CustomUser) auth.getPrincipal();
+			String user_name = user.getMember().getUser_name();
+			
+			clubDto.setUser_id(user_id);
+			clubDto.setUser_name(user_name);
+			clubDto.setClub_id(club_id);
+			
 			if(clubService.joinClub(clubDto) != 1) {
 				rattr.addFlashAttribute("msg", "JOIN_FAIL");
 				return "redirect:/club";
@@ -202,14 +213,19 @@ public class ClubController
 	@GetMapping("club/board/view")
 	public String boardView(HttpServletRequest request, RedirectAttributes rattr, Model m, ClubDto clubDto)
 	{
-		String sclub_id = request.getParameter("id");
+		int club_id = Integer.parseInt(request.getParameter("id"));
 		//HttpServletRequest를 꼭 Integer.parseInt를 해야하는지 다시 생각해볼것
+		String article_id = request.getParameter("article_id");
+		System.out.println("article_id = " + article_id.getClass());
+		
+		int club_article_id = Integer.valueOf(article_id);
+		System.out.println(club_article_id);
+		
 		try {
-			int club_id = Integer.parseInt(sclub_id);
+			
+			System.out.println(club_article_id);
 			System.out.println("club_id : "+club_id);
-			Integer club_article_id = Integer.parseInt(request.getParameter("article_id"));
 			System.out.println("club_article_id : "+club_article_id);
-			System.out.println(club_article_id.getClass());
 			
 			clubDto.setClub_id(club_id);
 			clubDto.setClub_article_id(club_article_id);
@@ -220,18 +236,46 @@ public class ClubController
 		
 		}catch(Exception e) {
 			System.out.println("상세 게시글 접근 중 Exception 발생");
-			rattr.addFlashAttribute("msg", "삭제되었거나 없는 게시물입니다.");
-			return "redirect:/club/detail?id=" + sclub_id;
+			rattr.addFlashAttribute("msg", "READ_ERR");
+			return "redirect:/club/detail?id=" + club_id;
 		}
 		
 		return "club/cboarddetail";
 	}
 	
-	@RequestMapping("club/board/edit")
-	public String clubEdit(HttpServletRequest request)
+	@GetMapping("club/board/edit")
+	public String clubEdit(HttpServletRequest request, Model m, ClubDto clubDto)
 	{
+		try {
+			
+			int club_id = Integer.parseInt(request.getParameter("id"));
+			int club_article_id = Integer.parseInt(request.getParameter("article_id"));
+			
+			clubDto.setClub_id(club_id);
+			clubDto.setClub_article_id(club_article_id);
+		/*
+		 * jsp에서 modBtn을 누르면 club_id, article_id를 가져와서 그걸 mapper로 비교, select 해온 결과를
+		 * jsp의 각 부분에 뿌려준다
+		 * mode는 mod라는 이름으로 보내야 함
+		 * 
+		 * jsp에서는 수정하기 버튼 클릭 시 수정된 데이터들을 update로 다시 등록한다	
+		 */
+			List<ClubDto> list = clubService.BoardRead(clubDto);
+			m.addAttribute("list", list);
+			System.out.println(list);
+			m.addAttribute("mode", "mod");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		
-		return "club/board/edit";
+		
+		return "club/clubboard";	//체크 필요
+	}
+	
+	@PostMapping("club/board/edit")
+	public String clubEdit() {
+		
+		return "club/clubboard";
 	}
 
 	@GetMapping("/club/board/write")

@@ -261,6 +261,7 @@
 			if(msg == "JOIN_FAIL") alert("동아리 가입에 실패하였습니다 잠시 후 다시 시도해주세요");
 			if(msg == "CREATE_OK") alert("동아리가 성공적으로 생성되었습니다.");
 			if(msg == "CREATE_ERR") alert("계정당 1개의 동아리만 만들 수 있습니다.");
+			
 
 			$("#clubCreateBtn").on("click", function(){
 				if(${myMsList eq '[]'}){

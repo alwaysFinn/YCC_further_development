@@ -91,6 +91,7 @@
   		select *
 		from club_board
 		where club_id = #{club_id}
+		order by club_board_upload desc
   	</select>
 
 	<!--동아리 메인 페이지 검색 기능 -->  	
