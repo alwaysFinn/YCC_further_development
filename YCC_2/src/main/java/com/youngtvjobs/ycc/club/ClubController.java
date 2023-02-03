@@ -48,6 +48,9 @@ public class ClubController
 				m.addAttribute("myList", myList);  
 				System.out.println("나의 동아리 목록 : " + myList);
 				System.out.println("내가 만든 동아리 목록 : " + myMsList);
+				List<ClubDto> bList = clubService.clubMainBoard(club_master_id);
+				m.addAttribute("bList", bList);
+				System.out.println("내가 만든 동아리 게시글 목록 : " + bList);
 			}
 			
 			int totalCnt = clubService.getAllClubSearchResultCnt(sc);

@@ -49,6 +49,7 @@ public class ClubServiceImpl implements ClubService{
 	//내가 동아리 장인 동아리 목록 보여주는 select
 	@Override
 	public List<ClubDto> selectMasterMyClub(String club_master_id) throws Exception {
+			clubDao.mainClubBoard(club_master_id);
 		return clubDao.selectMasterMyClub(club_master_id);
 	}
 
@@ -80,7 +81,7 @@ public class ClubServiceImpl implements ClubService{
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public int joinClub(ClubDto clubDto) throws Exception {
-		clubDao.updateClubMemberCnt(clubDto.getClub_id(), 1);// 동아리 가입 시 동아리 총원 +1 동시에 진행되게 설정
+		clubDao.updateClubMemberCnt(clubDto.getClub_id());// 동아리 가입 시 동아리 총원 +1 동시에 진행되게 설정
 		return clubDao.joinClub(clubDto);
 	}
 	
@@ -101,6 +102,7 @@ public class ClubServiceImpl implements ClubService{
 	
 	@Override
 	public List<ClubDto> BoardRead(ClubDto clubDto) throws Exception {
+			clubDao.clubBoardCntPlus(clubDto.getClub_article_id());//게시글 조회수 증가 기능
 		return clubDao.clubBoardRead(clubDto);
 	}
 
@@ -119,8 +121,10 @@ public class ClubServiceImpl implements ClubService{
 		return clubDao.clubBoardModRead(club_article_id);
 	}
 
-	
-
+	@Override
+	public List<ClubDto> clubMainBoard(String club_master_id) throws Exception {
+		return clubDao.mainClubBoard(club_master_id);
+	}
 	
 
 	

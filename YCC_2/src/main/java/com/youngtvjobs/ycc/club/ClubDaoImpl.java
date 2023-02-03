@@ -1,17 +1,15 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.31
- * 업데이트 내용 : user_id == club_master_id 체크하는 기능 추가
+ * 마지막 업데이트 : '23.02.03
+ * 업데이트 내용 : 동아리 메인 화면 게시글 보여주는 기능추가
  * 기능 : 동아리 CRUD 기능 구현된 동아리 DaoImpl로 clubmapper와 연결됨 
  */
 
 
 package com.youngtvjobs.ycc.club;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,12 +75,8 @@ public class ClubDaoImpl implements ClubDao{
 	}
 
 	@Override
-	public int updateClubMemberCnt(Integer club_id, int cnt) throws Exception {
-		Map map = new HashMap();
-		map.put("club_id", club_id);
-		map.put("cnt", cnt);
-		
-		return session.update(namespace + "clubMemberPlus", map);
+	public int updateClubMemberCnt(Integer club_id) throws Exception {
+		return session.update(namespace + "clubMemberPlus", club_id);
 	}
 	
 	@Override
@@ -119,6 +113,18 @@ public class ClubDaoImpl implements ClubDao{
 	@Override
 	public List<ClubDto> clubBoardModRead(int club_article_id) throws Exception {
 		return session.selectList(namespace + "clubBoardERead", club_article_id);
+	}
+
+	//게시글 조회수 증가 기능
+	@Override
+	public int clubBoardCntPlus(int club_article_id) throws Exception {
+		return session.update(namespace + "PlusViewCnt", club_article_id);
+	}
+
+	//동아리 메인 페이지 게시글 보여주는 기능
+	@Override
+	public List<ClubDto> mainClubBoard(String club_master_id) throws Exception {
+		return session.selectList(namespace + "clubMainBoard", club_master_id);
 	}
 
 

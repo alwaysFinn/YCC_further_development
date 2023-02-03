@@ -107,7 +107,7 @@
 				<div class="text-center mb-5">로그인을 해주세요.</div>
 			</c:when>
 			<c:otherwise> 
-				<c:forEach var='myMsList' items="${myMsList }">
+					<c:forEach var='myMsList' items="${myMsList }">
 					<div class="text-start px-4">
 						<div class="d-flex me-auto">
 							<img src="/ycc/resources/img/club/ycc_logo.png"
@@ -119,9 +119,17 @@
 								<h4>${myMsList.club_title }</h4>
 								</a>
 								<small class="text-muted">동아리장 : ${myMsList.club_master_id } | 멤버수 : ${myMsList.club_member } | 생성일 : ${myMsList.club_create_time }</small>
-								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글1</p></a>
+								<c:forEach var="clubDto" items="${bList }"  begin="0" end="2" step="1">
+										<li class="title"  >
+											<a style="text-decoration: none; color: black;"
+												 href="<c:url value="/club/board/view?id=${clubDto.club_id }&article_id=${clubDto.club_article_id  }"/>">
+												${clubDto.club_article_title }
+							      			</a>
+										</li>
+								</c:forEach>
+								<!-- <a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글1</p></a>
 								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글2</p></a>
-								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글3</p></a>
+								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글3</p></a> -->
 							</div>
 						</div>
 					</div>
