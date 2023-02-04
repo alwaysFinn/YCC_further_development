@@ -17,9 +17,11 @@
 	<main class="mt-5 pt-5">
 			<div class="container px-4">
 				
+				<form id="modform">
 					<h2 class="writing-header mb-3">
-						<a id="cBoardList">게시글 읽기</a> 
+						<a id="cBoardList" value=cbdetail[0].club_id>게시글 읽기</a> 
 					</h2>
+				</form>
 				<form id="form" class="frm" action="ycc/club/board" method="post">
 					<div class="card mb-4">
 	    				<div class="card-body">

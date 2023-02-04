@@ -127,9 +127,6 @@
 							      			</a>
 										</li>
 								</c:forEach>
-								<!-- <a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글1</p></a>
-								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글2</p></a>
-								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글3</p></a> -->
 							</div>
 						</div>
 					</div>
@@ -155,8 +152,9 @@
 								style="height: 150px; width: 150px;">
 						<!-- 동아리 이동(제목클릭) -->
 							<div class="text-truncate">
-								<a href="#" style="text-decoration: none; text-decoration-color: none;"></a>
+								<a name="myclub_title" style="text-decoration: none; color: black;" href="<c:url value="/club/detail?id=${myList.club_id}"/>" >
 								<h4>${myList.club_title }</h4>
+								</a>
 								<small class="text-muted">동아리장 : ${myList.club_master_id } | 멤버수 : ${myList.club_member } | 생성일 : ${myList.club_create_time }</small>
 								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글1</p></a>
 								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글2</p></a>

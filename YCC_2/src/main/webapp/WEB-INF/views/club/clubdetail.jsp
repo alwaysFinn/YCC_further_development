@@ -181,18 +181,13 @@
 			
 		$("#regiBtn").on("click", function(){
 			if(!confirm("해당 동아리에 가입 하시겠습니까?")) return
-        	let form = $("#joinclub")
-			form.attr("action", "<c:url value='/club/join' />")
-			form.attr("method", "post")
-			form.submit() 
+        	let form = $("#joinclub");
+			form.attr("action", "<c:url value='/club/join' />");
+			form.attr("method", "post");
+			form.submit();
         	
 		})
-		/* $("#regiBtn").on("click", function() {
-				if(!confirm("해당 동아리에 가입 하시겠습니까?")) return
-				
-				location.href = "<c:url value='/course/regcomplete${pr.sc.queryString }&course_id=${courseDto.course_id }' />"
-			}) */
-
+		
 	})
 </script>
 	
