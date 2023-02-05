@@ -1,3 +1,12 @@
+<!--작성자 : alwaysFinn(김지호)
+	최초 작성일 : '23.01.30
+	마지막 업데이트 : '23.02.03
+	업데이트 내용 : 수정하기 기능 추가
+	기능 : 동아리 main페이지 view 파일 
+ -->
+
+
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
