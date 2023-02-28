@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -40,33 +39,30 @@ public class ClubController
 		try {
 			if(auth != null) {
 				
-				String user_id = auth.getName();
-				String club_master_id = auth.getName();
+				String user_id = auth.getName(); //시큐리티 통해 user_id 획득
+				String club_master_id = auth.getName(); // 시큐리티 통해 얻은 접속한 아이디를 club_master_id에도 부여 -> for 내가 동아리 장인 경우 check 
 				List<ClubDto> myMsList = clubService.selectMasterMyClub(club_master_id);	//login한 user가 동아리 장인 동아리 목록
 				List<ClubDto> myList = clubService.selectMyClub(user_id); //login한 user가 가입한 동아리 목록
-				m.addAttribute("myMsList", myMsList);
-				m.addAttribute("myList", myList);  
-				System.out.println("나의 동아리 목록 : " + myList);
-				System.out.println("내가 만든 동아리 목록 : " + myMsList);
-				List<ClubDto> bList = clubService.clubMainBoard(club_master_id);
-				m.addAttribute("bList", bList);
-				System.out.println("내가 만든 동아리 게시글 목록 : " + bList);
+				m.addAttribute("myMsList", myMsList); 
+				m.addAttribute("myList", myList); 
+				System.out.println("나의 동아리 목록 : " + myList); //Test
+				System.out.println("내가 만든 동아리 목록 : " + myMsList); //Test
+				List<ClubDto> bList = clubService.clubMainBoard(club_master_id); //내가 동아리 장인 경우 최근 게시글 상위 세개를 보여주는 목록 
+				m.addAttribute("bList", bList); 
+				System.out.println("내가 만든 동아리 게시글 목록 : " + bList); //Test
 			}
 			
-			int totalCnt = clubService.getAllClubSearchResultCnt(sc);
+			int totalCnt = clubService.getAllClubSearchResultCnt(sc); // 페이지네이션을 하기 위해 총 동아리 개수 체크
 			m.addAttribute("totalCnt", totalCnt);
 			
-			PageResolver pageResolver = new PageResolver(totalCnt, sc);
+			PageResolver pageResolver = new PageResolver(totalCnt, sc); // 검색결과 + 총 동아리 개수를 기반으로 페이지네이션
 			
-			List<ClubDto> list = clubService.getAllClubSearchResultPage(sc);
+			List<ClubDto> list = clubService.getAllClubSearchResultPage(sc); // 검색결과에 따른 목록 보여주는 용도 
 			m.addAttribute("list", list);
 			m.addAttribute("pr", pageResolver);
-			System.out.println("totalCnt:" + totalCnt);
-			System.out.println("pr:" + pageResolver);
-			/*
-			 * List<ClubDto> list = clubService.selectAllClub(); //생성되어있는 모든 동아리 목록
-			 * m.addAttribute("list", list); System.out.println("모든 동아리 목록 : " + list);
-			 */
+			System.out.println("totalCnt:" + totalCnt); //Test
+			System.out.println("pr:" + pageResolver); //Test
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -76,7 +72,7 @@ public class ClubController
 	//새로운 동아리 만드는 페이지로 이동하는 getmapping
 	@GetMapping("/club/create")
 	public String clubCreate(Model m){
-		m.addAttribute("mode", "new");
+		m.addAttribute("mode", "new"); //동아리 제목 및 소개 수정 기능 추가 시 해당 기능은 mode = mod로 진입
 		
 		try {
 			
@@ -89,7 +85,7 @@ public class ClubController
 	
 	//동아리 만든 후 서버로 전송하는 postmapping
 	@PostMapping("/club/create")
-	public String clubCreate(Model m, ClubDto clubDto, String club_title, String club_info, Authentication auth) {
+	public String clubCreate(Model m, ClubDto clubDto, String club_title, String club_info, Authentication auth, RedirectAttributes rattr) {
 
 		clubDto.setClub_master_id(auth.getName());
 		clubDto.setClub_title(club_title);
@@ -106,16 +102,16 @@ public class ClubController
 			if(clubService.overlapCreateValChk(clubDto) != 1) {//동아리 중복 생성 방지 유효성 체크
 				if(clubService.createClub(clubDto) != 1) {	//동아리 생성하는 insert, 성공하면 0, 실패하면 1을 return
 					System.out.println("동아리 생성 실패");
-					m.addAttribute("msg", "CREATE_FAIL");
+					rattr.addFlashAttribute("msg", "CREATE_FAIL");
 					return "redirect:/club/create";
 				}else {
 					System.out.println("동아리 생성 성공");
-					m.addAttribute("msg", "CREATE_OK");
+					rattr.addFlashAttribute("msg", "CREATE_OK");
 					return "redirect:/club";
 				}
 			}else {
 				System.out.println("동아리 중복 생성 불가");
-				m.addAttribute("msg", "CREATE_ERR");
+				rattr.addFlashAttribute("msg", "CREATE_ERR");
 				return "redirect:/club";
 				
 			}
@@ -128,55 +124,55 @@ public class ClubController
 	}
 	
 	//동아리 상세보기 페이지 접근하는 getmapping
-	@GetMapping("/club/detail")
-	public String clubDetail(ClubSearchItem sc, HttpServletRequest request, Authentication auth, ClubDto clubDto, Model m) {
-		
-		int club_id = Integer.parseInt(request.getParameter("id"));	//request.getParameter는 string으로 불러오므로 int로 형변환 필수
-		
-		try {
-			if(auth != null) {
-				
-				String user_id = auth.getName();
-				clubDto.setClub_id(club_id);
-				List<ClubDto> clubDetail = clubService.selectClubDetail(club_id);
-				m.addAttribute("clubDetail", clubDetail);
-				System.out.println("clubDetail : " + clubDetail);
-				
-				List<ClubDto> cbList = clubService.selectClubBoard(club_id);
-				m.addAttribute("cbList", cbList);
-				System.out.println("cbList : " + cbList);
-				
-				clubDto.setUser_id(user_id);
-				
-				
-				int totalCnt = clubService.getClubSearchResultCnt(sc);
-				m.addAttribute("totalCnt", totalCnt);
-				
-				/*
-				 * PageResolver pageResolver = new PageResolver(totalCnt, sc);
-				 * m.addAttribute("pr", pageResolver);
-				 */
-				
-				List<ClubDto> list = clubService.getClubSearchResultPage(sc);
-				m.addAttribute("list", list);
-				
-				clubDto.setClub_master_id(user_id); // for chkClubMaster()
-			}else {
-				return "redirect:/login";
-			}
-			if(clubService.chkClubMember(clubDto) == 1) {
-				m.addAttribute("mode", "CM");
-			}else if(clubService.chkClubMaster(clubDto) == 1) {
-				m.addAttribute("mode", "CMT");
-			}else {
-				m.addAttribute("mode", "N");
-			}
+		@GetMapping("/club/detail")
+		public String clubDetail(ClubSearchItem sc, HttpServletRequest request, Authentication auth, ClubDto clubDto, Model m) {
 			
-		}catch(Exception e) {
-			e.printStackTrace();
+			int club_id = Integer.parseInt(request.getParameter("id"));	//request.getParameter는 string으로 불러오므로 int로 형변환 필수
+			
+			try {
+				if(auth != null) {
+					
+					String user_id = auth.getName();
+					clubDto.setClub_id(club_id);
+					List<ClubDto> clubDetail = clubService.selectClubDetail(club_id);
+					m.addAttribute("clubDetail", clubDetail);
+					System.out.println("clubDetail : " + clubDetail);
+					
+					List<ClubDto> cbList = clubService.selectClubBoard(club_id);
+					m.addAttribute("cbList", cbList);
+					System.out.println("cbList : " + cbList);
+					
+					clubDto.setUser_id(user_id);
+					
+					
+					int totalCnt = clubService.getClubSearchResultCnt(sc);
+					m.addAttribute("totalCnt", totalCnt);
+					
+					/*
+					 * PageResolver pageResolver = new PageResolver(totalCnt, sc);
+					 * m.addAttribute("pr", pageResolver);
+					 */
+					
+					List<ClubDto> list = clubService.getClubSearchResultPage(sc);
+					m.addAttribute("list", list);
+					
+					clubDto.setClub_master_id(user_id); // for chkClubMaster()
+				}else {
+					return "redirect:/login";
+				}
+				if(clubService.chkClubMember(clubDto) == 1) {
+					m.addAttribute("mode", "CM");
+				}else if(clubService.chkClubMaster(clubDto) == 1) {
+					m.addAttribute("mode", "CMT");
+				}else {
+					m.addAttribute("mode", "N");
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return "club/clubdetail";
 		}
-		return "club/clubdetail";
-	}
 	
 	//동아리 가입하기 클릭 시 작동하는 postmapping
 	@PostMapping("/club/join")
@@ -251,18 +247,13 @@ public class ClubController
 	{
 		try {
 			
-			int club_article_id = Integer.parseInt(request.getParameter("article_id"));
-		/*
-		 * jsp에서 modBtn을 누르면 club_id, article_id를 가져와서 그걸 mapper로 비교, select 해온 결과를
-		 * jsp의 각 부분에 뿌려준다
-		 * mode는 mod라는 이름으로 보내야 함
-		 * 
-		 * jsp에서는 수정하기 버튼 클릭 시 수정된 데이터들을 update로 다시 등록한다	
-		 */
+			Integer club_article_id = Integer.parseInt(request.getParameter("article_id"));
+		
 			List<ClubDto> list = clubService.BoardModRead(club_article_id);
 			m.addAttribute("list", list);
 			System.out.println(list);
-			m.addAttribute("mode", "mod");
+			m.addAttribute("mode", "modi");
+			return "redirect:/club/board/edit?id=" + club_article_id;
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -271,11 +262,13 @@ public class ClubController
 		return "club/clubboard";	//체크 필요
 	}
 	
-	@PostMapping("club/board/edit")
+	
+	@PostMapping("club/board/edit") 
 	public String clubEdit() {
-		
-		return "club/clubboard";
+	
+		return "club/clubboard"; 
 	}
+	
 
 	@GetMapping("/club/board/write")
 	public String clubWrite(@RequestParam("id") int club_id, Authentication auth, ClubDto clubDto, Model m) {

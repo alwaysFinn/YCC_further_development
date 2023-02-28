@@ -137,7 +137,7 @@
 	
 		<!-- 검색 -->
 		<div class="container text-center">
-			<form action="<c:url value= "/board/notice"/>" class="searchForm" id="clubsearch" method="get">
+			<form action="<c:url value= "/club/detail?id=${clubDto.club_id }"/>" class="searchForm" id="clubsearch" method="get">
 				<div class="row justify-content-md-center pt-5 pb-5">
 					<div class = "col-sm-auto px-1">
 						<select class="form-select" name="option" style="width: 150px;">

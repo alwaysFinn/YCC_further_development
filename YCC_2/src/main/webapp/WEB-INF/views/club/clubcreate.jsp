@@ -57,8 +57,8 @@
 		          					<textarea id="club_info" name="club_info" style="resize: none; min-width: 100%" maxlength="100" placeholder="동아리 소개글 작성"></textarea>
 						        </td>
 						</tr>
-						
-						<!-- 동아리 배너 이미지 -->
+						<!-- 
+						동아리 배너 이미지
 						<tr>
 							<th class="col" style="vertical-align: middle !important;">동아리 배너 이미지</th>
 								<td>
@@ -66,7 +66,7 @@
 		     						<div id="uploadResult"></div>
 								</td>
 						</tr>
-						
+						 -->
 					</tbody>
 				</table>
 					<button id="submitBtn" type="submit" class="btn btn-primary">등록</button>

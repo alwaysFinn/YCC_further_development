@@ -1,14 +1,7 @@
-<!--작성자 : alwaysFinn(김지호)
-	최초 작성일 : '23.01.30
-	마지막 업데이트 : '23.02.03
-	업데이트 내용 : 수정하기 기능 추가
-	기능 : 동아리 main페이지 view 파일 
- -->
 
-
-
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -28,14 +21,15 @@
 				
 				<form id="modform">
 					<h2 class="writing-header mb-3">
-						<a id="cBoardList" value=cbdetail[0].club_id>게시글 읽기</a> 
+						<a id="cBoardList" value=${cbdetail[0].club_article_id }>게시글 읽기</a> 
+						<input type="hidden" name="club_article_id" value=${cbdetail[0].club_article_id }>
+						<%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"> --%>
 					</h2>
 				</form>
 				<form id="form" class="frm" action="ycc/club/board" method="post">
 					<div class="card mb-4">
 	    				<div class="card-body">
     						<!-- 게시글 정보 -->
-    						<input type="hidden" name="article_id" value=${cbdetail[0].club_article_id }>
   							<h4 class="title" >${cbdetail[0].club_article_title }</h4>
   							<p class="writingInfo">작성자 : ${cbdetail[0].user_id} |
    								게시일 : <fmt:formatDate value="${cbdetail[0].club_board_upload_time }" pattern="yyyy-MM-dd" type="date"/> 
@@ -126,10 +120,8 @@
 		
 		$("#modifyBtn").on("click", function() {
 			if(!confirm("수정하시겠습니까?")) return;
-			let club_article_id = ${cbdetail[0].club_article_id }
-			let club_id = ${cbdetail[0].club_id }
-			let form = $("#form")
-			form.attr("action", "<c:url value='/club/board/edit?article_id=${cbdetail[0].club_article_id }' />")
+			let form = $("#modform")
+			form.attr("action", "<c:url value='/club/board/edit' />")
 			form.attr("method", "get")
 			form.submit()
 			})

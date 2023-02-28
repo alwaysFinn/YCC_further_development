@@ -49,27 +49,25 @@
 
 	<!-- 인기동아리, 동아리 추가 부분 -->
 	<div class="container text-center">
-		<h1 class="text-start mt-3">인기 동아리</h1>
+	<!-- <h1 class="text-start mt-3">인기 동아리</h1>
 		<hr>
 		<div class="row">
-			<!--인기동아리1 그리드-->
-			<div class="col-md-4">
-				<!-- 이미지 부분 -->
+			<div class="col-md-6">
+				이미지 부분
 				<div style="position: relative;">
 					<img class="img-fluid" src="/ycc/resources/img/club/catclub.jpg">
-					<!-- 겹쳐지는 텍스트 부분 -->
-					<div class="club-info">
+					겹쳐지는 텍스트 부분
+					<div class="club-info col-12">
 						<div class="club-info px-2">
 							<h2 style="font-size: 2vw">고양이 매니아</h2>
 							<p style="font-size: 0.8vw">
 								동아리장 : 최선혜 | 멤버 수 : 50명 |<br>생성일 : 2022-10-23
-							</p>
+							</p>.
 						</div>
 					</div>
 				</div>
 			</div>
-			<!--인기동아리2 그리드-->
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<div style="position: relative;">
 					<img class="img-thumbnail"
 						src="/ycc/resources/img/club/swimclub.jpg">
@@ -84,16 +82,8 @@
 					</div>
 				</div>
 			</div>
-			<!--동아리 추가 그리드-->
-			<div class="col-md-4 h-100">
-				<div style="position: relative;">
-					<img class="img-fluid" src="/ycc/resources/img/club/add_club.png">
-					<div class="club-info" style="text-align: center">
-						<h2 style="font-size: 3vw">동아리 만들기</h2>
-					</div>
-				</div>
-			</div>
 		</div>
+ -->
 
 		<!-- 내 동아리 -->
 		<h1 class="text-start mt-5">내 동아리</h1>
@@ -107,7 +97,7 @@
 				<div class="text-center mb-5">로그인을 해주세요.</div>
 			</c:when>
 			<c:otherwise> 
-					<c:forEach var='myMsList' items="${myMsList }">
+				<c:forEach var='myMsList' items="${myMsList }">
 					<div class="text-start px-4">
 						<div class="d-flex me-auto">
 							<img src="/ycc/resources/img/club/ycc_logo.png"
@@ -161,11 +151,12 @@
 								<a href="#" class="text-reset text-decoration-none"><p class="mb-2">게시글3</p></a>
 							</div>
 						</div>
-						<hr>
+						
 					</div>
 				</c:forEach>
 			</c:otherwise>
 		</c:choose>
+		<hr>
 		<!-- 전체 동아리 -->
 		<h1 class="text-start mt-5">전체 동아리</h1>
 		<hr>
