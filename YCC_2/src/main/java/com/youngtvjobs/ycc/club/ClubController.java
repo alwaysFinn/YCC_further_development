@@ -1,8 +1,8 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.01.31
- * 업데이트 내용 : 동아리 장인지 아닌지 체크하는 기능 추가
+ * 마지막 업데이트 : '23.03.01
+ * 업데이트 내용 : 게시글 수정하기 기능 활성화
  * 기능 : 동아리 불러오기 기능 구현된 동아리 controller 
  */
 
@@ -202,36 +202,19 @@ public class ClubController
 		return "club/clubmain";
 	}
 
-	@PostMapping("/club/board")
-	public String clubBoard(HttpServletRequest request)
-	{
-
-		return "club/club_board";
-	}
-
 	@GetMapping("club/board/view")
 	public String boardView(HttpServletRequest request, RedirectAttributes rattr, Model m, ClubDto clubDto)
 	{
 		int club_id = Integer.parseInt(request.getParameter("id"));
-		//HttpServletRequest를 꼭 Integer.parseInt를 해야하는지 다시 생각해볼것
 		String article_id = request.getParameter("article_id");
-		System.out.println("article_id = " + article_id.getClass());
 		
 		int club_article_id = Integer.valueOf(article_id);
-		System.out.println(club_article_id);
 		
 		try {
-			
-			System.out.println(club_article_id);
-			System.out.println("club_id : "+club_id);
-			System.out.println("club_article_id : "+club_article_id);
-			
 			clubDto.setClub_id(club_id);
 			clubDto.setClub_article_id(club_article_id);
 			List<ClubDto> cbdetail = clubService.BoardRead(clubDto);
-			System.out.println("cbdetail : " + cbdetail);
 			m.addAttribute("cbdetail", cbdetail);
-			
 		
 		}catch(Exception e) {
 			System.out.println("상세 게시글 접근 중 Exception 발생");
@@ -243,17 +226,15 @@ public class ClubController
 	}
 	
 	@GetMapping("club/board/edit")
-	public String clubEdit(HttpServletRequest request, Model m)
-	{
+	public String clubEdit(HttpServletRequest request, Model m){
 		try {
 			
-			Integer club_article_id = Integer.parseInt(request.getParameter("article_id"));
+			int club_article_id = Integer.parseInt(request.getParameter("article_id"));
 		
 			List<ClubDto> list = clubService.BoardModRead(club_article_id);
 			m.addAttribute("list", list);
-			System.out.println(list);
+			System.out.println("list : " + list);
 			m.addAttribute("mode", "modi");
-			return "redirect:/club/board/edit?id=" + club_article_id;
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -264,14 +245,47 @@ public class ClubController
 	
 	
 	@PostMapping("club/board/edit") 
-	public String clubEdit() {
-	
-		return "club/clubboard"; 
+	public String clubEdit(RedirectAttributes rattr, Authentication auth, int club_article_id, String club_article_title, String club_article_content, int club_id) {
+		try {
+
+				System.out.println("club_article_id : " + club_article_id);
+				System.out.println("club_article_title : " + club_article_title);
+				System.out.println("club_article_content : " + club_article_content);
+				System.out.println("club_id : " + club_id);
+				
+			
+				ClubDto clubDto = new ClubDto();
+				clubDto.setClub_article_title(club_article_title);
+				clubDto.setClub_article_content(club_article_content);
+				clubDto.setClub_id(club_id);
+				clubDto.setClub_article_id(club_article_id);
+				
+				String user_id = auth.getName();
+				clubDto.setUser_id(user_id);
+				System.out.println("user_id : " + user_id);
+			
+			if(clubService.BoardModPost(clubDto) != 1) {
+				rattr.addFlashAttribute("msg", "MOD_FAIL");
+				System.out.println("글 업데이트 실패");
+				return "redirect:/club/board/edit?article_id=" + club_article_id;
+			}else {
+				rattr.addFlashAttribute("msg", "MOD_SUCCESS");
+				System.out.println("글 업데이트 성공");
+				return "redirect:/club/board/view?id="+club_id+"&article_id="+club_article_id;
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("업데이트 중 예외 발생");
+			rattr.addFlashAttribute("msg", "MOD_ERR");
+			
+			return "redirect:/club/board/edit?article_id=" + club_article_id;
+		}
 	}
 	
 
 	@GetMapping("/club/board/write")
-	public String clubWrite(@RequestParam("id") int club_id, Authentication auth, ClubDto clubDto, Model m) {
+	public String clubWrite(@RequestParam("id") int club_id, Model m) {
 		m.addAttribute("mode", "new");
 		m.addAttribute("club_id", club_id);
 		
@@ -279,20 +293,17 @@ public class ClubController
 	}
 
 	@PostMapping("club/board/write")
-	public String clubWrite(RedirectAttributes rattr, HttpServletRequest request, Model m, ClubDto clubDto, Authentication auth, String club_article_title, String club_article_contents, int club_id) {
+	public String clubWrite(RedirectAttributes rattr, HttpServletRequest request, Model m, ClubDto clubDto,
+			Authentication auth, String club_article_title, String club_article_content, int club_id) {
 		
 		
 		try {
-			System.out.println("club_article_title : " + club_article_title);
-			System.out.println("club_article_contents : " + club_article_contents);
-			System.out.println("club_id : " + club_id);
-			
 			String user_id = auth.getName();
-			System.out.println("user_id : " + user_id);
+
 			clubDto.setClub_id(club_id);
 			clubDto.setUser_id(user_id);
 			clubDto.setClub_article_title(club_article_title);
-			clubDto.setClub_article_content(club_article_contents);
+			clubDto.setClub_article_content(club_article_content);
 			
 			if(clubService.BoardWrite(clubDto) != 1) {
 				System.out.println("글 작성 실패");

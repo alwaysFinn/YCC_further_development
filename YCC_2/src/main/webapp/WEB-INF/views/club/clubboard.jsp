@@ -1,8 +1,8 @@
 
  <!-- 작성자 : alwaysFinn(김지호)
  	  최초 작성일 : '23.01.12
- 	  마지막 업데이트 : '23.01.29
- 	  업데이트 내용 : summernote nullCheck 기능 구현 및 게시글 등록 기능 추가
+ 	  마지막 업데이트 : '23.03.01
+ 	  업데이트 내용 : 게시글 수정하기 기능 활성화
  	  기능 : 동아리 게시글 작성, 수정, 읽기 페이지
  -->
 
@@ -37,11 +37,12 @@
 					</c:when>
 				</c:choose>
    				<hr>
-   					<input type="hidden" id="club_id" name="club_id" value="${club_id}">
+   					<input type="hidden" id="club_id" name="club_id" value="${list[0].club_id}">
+   					<input type="hidden" id="club_article_id" name="club_article_id" value="${list[0].club_article_id}">
    					<c:if test="${mode eq 'new' }">
 						<input type="text" class="form-control mb-3" id="title" name="club_article_title"
 	   					 placeholder="제목을 입력해주세요">
-	    				<textarea class="summernote mb-5" id="contents" name="club_article_contents">
+	    				<textarea class="summernote mb-5" id="contents" name="club_article_content">
 	    				</textarea>
 	    				
 			    		<div class="m-5" style="text-align: center;">
@@ -53,13 +54,13 @@
 					<c:if test="${mode eq 'modi' }">
 						<input type="text" class="form-control mb-3" id="title" name="club_article_title"
 	   					 value="${list[0].club_article_title}">
-	    				<textarea class="summernote mb-5" id="contents" name="club_article_contents">
+	    				<textarea class="summernote mb-5" id="contents" name="club_article_content">
 	    					<c:out value="${list[0].club_article_content}"/>
 	    				</textarea>
 	    				
 	    				<div class="m-5" style="text-align: center;">
-			      			<button type="button" class="btn btn-primary mx-3" id="postBtn">수정하기</button>
-			      			<input class="btn btn-secondary" type="button" value="취소하기">
+			      			<button type="button" class="btn btn-primary mx-3" id="modiBtn">수정하기</button>
+			      			<button type="button" class="btn btn-secondary mx-3" id="cBtn">취소하기</button>
 			    		</div>
 					</c:if>	
    					
@@ -79,17 +80,19 @@
   <script type="text/javascript">
   	$(document).ready(function() {
 
-		 //summernot 
-		$('.summernote').summernote({
-			placeholder:"내용을 입력하세요.",
+		 //summernote
+		$('#contents').summernote({
+			placeholder:'내용을 입력하세요.',
 		    height: 600,
 		    lang: "ko-KR",
 		    disableResizeEditor: true
 		  });
 		 
 		let msg = "${msg}"
-			if(msg == "WRITE_FAIL") alert("게시글 등록에 실패했습니다 잠시 후 다시 시도해주세요.")
-			if(msg == "WRITE_ERR") alert("잠시 후 다시 시도해주세요")
+			if(msg == "WRITE_FAIL") alert("게시글 등록에 실패했습니다. 잠시 후 다시 시도해주세요.");
+			if(msg == "WRITE_ERR") alert("잠시 후 다시 시도해주세요");
+			if(msg == "MOD_FAIL") alert("게시글 수정에 실패했습니다. 잠시 후 다시 시도해주세요.");
+			if(msg == "MOD_ERR") alert("잠시 후 다시 시도해주세요");
 	   
 		 
 		let nullCheck = function() {
@@ -108,14 +111,29 @@
 				return true;
 		}
 			
-		 $("#postBtn").on("click", function() {
+		$("#postBtn").on("click", function() {
 			let form = $("#form");
 			form.attr("action", "<c:url value='/club/board/write' />")
 			form.attr("method", "post")
 			
 			if(nullCheck()){
-				form.submit()
+				form.submit();
 			}
+		})
+		
+		$("#modiBtn").on("click", function() {
+			let form = $("#form");
+			form.attr("action", "<c:url value='/club/board/edit' />")
+			form.attr("method", "post")
+			
+			if(nullCheck()){
+				form.submit();
+			}
+		})
+		
+		$("#cBtn").on("click", function() {
+			if(!confirm("취소하시겠습니까?")) return;
+			location.href ="<c:url value='/club/board/view?id=${list[0].club_id}&article_id=${list[0].club_article_id }' />";
 		})
 		
   	})

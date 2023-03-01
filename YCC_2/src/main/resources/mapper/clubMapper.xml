@@ -146,7 +146,7 @@
   	</insert>
   	
   	<!-- 동아리 게시판 수정하기 select -->
-  	<select id="clubBoardERead" parameterType="String" resultType="ClubDto">
+  	<select id="clubBoardERead" parameterType="int" resultType="ClubDto">
   		<include refid="clubBoard" />
   		WHERE club_article_id = #{club_article_id}
   	</select>

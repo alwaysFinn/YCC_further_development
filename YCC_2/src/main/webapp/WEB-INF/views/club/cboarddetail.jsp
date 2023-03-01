@@ -1,4 +1,11 @@
 
+ <!-- 작성자 : alwaysFinn(김지호)
+ 	  최초 작성일 : '23.01.06
+ 	  마지막 업데이트 : '23.03.01
+ 	  업데이트 내용 : 수정 시 메세지 기능 추가
+ 	  기능 : 동아리 main페이지 view 파일 
+ -->
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -39,7 +46,7 @@
  							<!-- 내용 -->
   							<p class="content" >${cbdetail[0].club_article_content }</p>
 	    				</div>
-					</div>				
+	    			</div>
 					
 					<div class="row pb-5" style="float:right">
 						<div class="col-auto px-1" >
@@ -61,69 +68,34 @@
       			         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			       </div>
 		       </form>
-		  	
-			       <!-- 이전글, 다음글  -->
-			       <div class="prevNext">
-						<table class="table table-bordered table-hover" style="border-radius:5px;">
-							<colgroup>
-								<col width="120px;">
-								<col width="auto;">
-							</colgroup>
-				    			<tbody>
-				    				<tr>
-				    					<th scope="row" class="text-center table-primary"  >이전글<i class="bi bi-caret-up-fill"></i></th>
-				    						<td class="pre" id="preTitle"> 
-				    							<c:if test ="${preView.preId != 9999}">
-				    								<a style="text-decoration: none; color: black;"
-				    								 href="<c:url value="/board/post?article_id=${preView.preId  }"/>">	 
-				    								${preView.preTitle}</a>
-		      									</c:if>
-		      									<c:if test = "${preView.preId == 9999}">
-		      										<div class="fs-6" style="font-size: bold;">이전글이 없습니다.</div>
-		      									</c:if>
-		      								</td>
-				    				</tr>
-				    				<tr>
-				    					<th scope="row" class="text-center table-primary">다음글<i class="bi bi-caret-down-fill"></i></th>
-				    						<td  class="next" id="nextTitle">
-				    							<c:if test ="${nextView.nextId != 9999}" >
-				    								<a style="text-decoration: none; color: black; "
-				    								 href="<c:url value="/board/post?article_id=${nextView.nextId  }"/>">
-				    							 	${nextView.nextTitle}</a>
-				    							</c:if>
-				    							<c:if test ="${nextView.nextId == 9999}">
-				    								<div class="fs-6" style="font-size: bold;">다음글이 없습니다.</div>
-				    							</c:if>
-				    						</td>
-				    				</tr>
-				    			</tbody>
-			    		</table>
-			    	</div>
-			    	</div>
-			</main>
-		
+	    	</div>
+	    	<div class="row pb-5">
+	    	</div>
+	</main>
+	
 				
-<script>
+<script type="text/javascript">
 
 	$(document).ready(function(){
+		
+		let msg = "${msg}";
+			if(msg == "MOD_SUCCESS") alert("글 수정이 완료되었습니다.");
+		
+		
 		
 		let club_article_id = ${cbdetail[0].club_article_id }
 		let club_id = ${cbdetail[0].club_id }
 		console.log("club_article_id", club_article_id )
 		console.log("club_id", club_id )
 
-		let msg = "${msg}"
 		
 		$("#listBtn").on("click", function() {
-			location.href ="<c:url value='/club/board${searchItem.queryString}' />";
+			location.href ="<c:url value='/club/detail?id=${cbdetail[0].club_id }' />";
 		})
 		
 		$("#modifyBtn").on("click", function() {
 			if(!confirm("수정하시겠습니까?")) return;
-			let form = $("#modform")
-			form.attr("action", "<c:url value='/club/board/edit' />")
-			form.attr("method", "get")
-			form.submit()
+			location.href ="<c:url value='/club/board/edit?article_id=${cbdetail[0].club_article_id }' />";
 			})
 	
 		$("#deleteBtn").on("click", function() {

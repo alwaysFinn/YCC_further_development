@@ -1,8 +1,8 @@
 /*
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
- * 마지막 업데이트 : '23.02.03
- * 업데이트 내용 : 동아리 메인 화면 게시글 보여주는 기능추가
+ * 마지막 업데이트 : '23.03.01
+ * 업데이트 내용 : 동아리 게시판 수정하기 post 기능 연동
  * 기능 : 동아리 CRUD 기능 구현된 동아리 service file 
  */
 
@@ -37,6 +37,7 @@ public interface ClubService {
 	int BoardWrite(ClubDto clubDto)throws Exception;
 	List<ClubDto> BoardRead(ClubDto clubDto)throws Exception;
 	List<ClubDto> BoardModRead(int club_article_id)throws Exception; // 수정용 select
+	int BoardModPost(ClubDto clubDto) throws Exception; // 수정용 update
 	
 	int getClubSearchResultCnt(ClubSearchItem sc) throws Exception;
 	List<ClubDto> getClubSearchResultPage(ClubSearchItem sc) throws Exception; 
