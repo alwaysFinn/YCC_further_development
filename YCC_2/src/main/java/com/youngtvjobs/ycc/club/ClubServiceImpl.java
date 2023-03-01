@@ -2,7 +2,7 @@
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
  * 마지막 업데이트 : '23.03.01
- * 업데이트 내용 : 동아리 게시판 수정하기 post 기능 연동
+ * 업데이트 내용 : 동아리 게시판 수정하기 post 기능 연동, 게시글 삭제 기능 연동
  * 기능 : 동아리 CRUD 기능 구현된 동아리 serviceImpl로 clubDao와 연결됨 
  */
 
@@ -96,12 +96,12 @@ public class ClubServiceImpl implements ClubService{
 	}
 
 	@Override
-	public int BoardWrite(ClubDto clubDto) throws Exception {
+	public int clubBoardWrite(ClubDto clubDto) throws Exception {
 		return clubDao.clubBoardWrite(clubDto);
 	}
 	
 	@Override
-	public List<ClubDto> BoardRead(ClubDto clubDto) throws Exception {
+	public List<ClubDto> clubBoardRead(ClubDto clubDto) throws Exception {
 			clubDao.clubBoardCntPlus(clubDto.getClub_article_id());//게시글 조회수 증가 기능
 		return clubDao.clubBoardRead(clubDto);
 	}
@@ -117,7 +117,7 @@ public class ClubServiceImpl implements ClubService{
 	}
 
 	@Override
-	public List<ClubDto> BoardModRead(int club_article_id) throws Exception {
+	public List<ClubDto> clubBoardModRead(int club_article_id) throws Exception {
 		return clubDao.clubBoardModRead(club_article_id);
 	}
 
@@ -127,8 +127,13 @@ public class ClubServiceImpl implements ClubService{
 	}
 
 	@Override
-	public int BoardModPost(ClubDto clubDto) throws Exception {
+	public int clubBoardModPost(ClubDto clubDto) throws Exception {
 		return clubDao.clubBoardModUpdate(clubDto);
+	}
+
+	@Override
+	public int clubBoardDelete(int club_article_id) throws Exception {
+		return clubDao.clubBoardDelete(club_article_id);
 	}
 	
 

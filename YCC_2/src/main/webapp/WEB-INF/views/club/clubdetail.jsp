@@ -170,6 +170,7 @@
 		let msg = "${msg}"
 			if(msg == "WRITE_OK") alert("글이 등록되었습니다.");
 			if(msg == "READ_ERR") alert("삭제되었거나 없는 게시글입니다.");
+			if(msg == "REMOVE_SUCCESS") alert("글이 성공적으로 삭제되었습니다.");
 		/* 
 		function goPost(){
 		    let f = document.createElement('form');

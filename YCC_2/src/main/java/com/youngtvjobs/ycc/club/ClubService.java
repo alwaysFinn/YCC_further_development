@@ -2,7 +2,7 @@
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
  * 마지막 업데이트 : '23.03.01
- * 업데이트 내용 : 동아리 게시판 수정하기 post 기능 연동
+ * 업데이트 내용 : 동아리 게시판 수정하기 post 기능 연동, 게시글 삭제 기능 연동
  * 기능 : 동아리 CRUD 기능 구현된 동아리 service file 
  */
 
@@ -31,13 +31,14 @@ public interface ClubService {
 	
 	int joinClub(ClubDto clubDto) throws Exception;//동아리 가입하는 insert기능
 	
-	int getAllClubSearchResultCnt(SearchItem sc) throws Exception;
-	List<ClubDto> getAllClubSearchResultPage(SearchItem sc) throws Exception;
+	int getAllClubSearchResultCnt(SearchItem sc) throws Exception; //동아리 검색결과 개수
+	List<ClubDto> getAllClubSearchResultPage(SearchItem sc) throws Exception; //동아리 검색 결과 페이징
 	
-	int BoardWrite(ClubDto clubDto)throws Exception;
-	List<ClubDto> BoardRead(ClubDto clubDto)throws Exception;
-	List<ClubDto> BoardModRead(int club_article_id)throws Exception; // 수정용 select
-	int BoardModPost(ClubDto clubDto) throws Exception; // 수정용 update
+	int clubBoardWrite(ClubDto clubDto)throws Exception; // 작성용 insert
+	List<ClubDto> clubBoardRead(ClubDto clubDto)throws Exception; // 읽기용 select
+	List<ClubDto> clubBoardModRead(int club_article_id)throws Exception; // 수정용 select
+	int clubBoardModPost(ClubDto clubDto) throws Exception; // 수정용 update
+	int clubBoardDelete(int club_article_id) throws Exception; // 삭제용 delete
 	
 	int getClubSearchResultCnt(ClubSearchItem sc) throws Exception;
 	List<ClubDto> getClubSearchResultPage(ClubSearchItem sc) throws Exception; 

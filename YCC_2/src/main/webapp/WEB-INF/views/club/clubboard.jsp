@@ -28,6 +28,7 @@
   		<!--container start-->
   		<form id="form" method="post" action="" >
   			<div class="container mt-5">
+			<input type="hidden" id="club_id" name="club_id" value="${club_id}">
 	  			<c:choose>
 					<c:when test ="${mode eq 'new'}">
 						<h3 class="posttitle pt-3">글쓰기</h3>
@@ -37,8 +38,7 @@
 					</c:when>
 				</c:choose>
    				<hr>
-   					<input type="hidden" id="club_id" name="club_id" value="${list[0].club_id}">
-   					<input type="hidden" id="club_article_id" name="club_article_id" value="${list[0].club_article_id}">
+   					
    					<c:if test="${mode eq 'new' }">
 						<input type="text" class="form-control mb-3" id="title" name="club_article_title"
 	   					 placeholder="제목을 입력해주세요">
@@ -52,6 +52,7 @@
 					</c:if>
 					<!-- 여기부터 수정할 차례 수정 시 온 값들 수정할 수 있게끔 -->
 					<c:if test="${mode eq 'modi' }">
+						<input type="hidden" id="club_article_id" name="club_article_id" value="${list[0].club_article_id}">
 						<input type="text" class="form-control mb-3" id="title" name="club_article_title"
 	   					 value="${list[0].club_article_title}">
 	    				<textarea class="summernote mb-5" id="contents" name="club_article_content">

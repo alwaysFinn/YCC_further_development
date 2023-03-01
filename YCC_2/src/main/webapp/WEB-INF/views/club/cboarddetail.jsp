@@ -33,9 +33,11 @@
 						<%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"> --%>
 					</h2>
 				</form>
-				<form id="form" class="frm" action="ycc/club/board" method="post">
+				<form id="form" class="frm" action="" method="post">
 					<div class="card mb-4">
 	    				<div class="card-body">
+	    				<input type="hidden" name="club_article_id" value=${cbdetail[0].club_article_id }>
+	    				<input type="hidden" name="club_id" value=${cbdetail[0].club_id }>
     						<!-- 게시글 정보 -->
   							<h4 class="title" >${cbdetail[0].club_article_title }</h4>
   							<p class="writingInfo">작성자 : ${cbdetail[0].user_id} |
@@ -80,8 +82,8 @@
 		
 		let msg = "${msg}";
 			if(msg == "MOD_SUCCESS") alert("글 수정이 완료되었습니다.");
-		
-		
+			if(msg == "REMOVE_FAIL") alert("글 삭제 실패");
+			if(msg == "REMOVE_ERR") alert("글 삭제에 실패했습니다. 잠시 후 다시 시도해주세요");
 		
 		let club_article_id = ${cbdetail[0].club_article_id }
 		let club_id = ${cbdetail[0].club_id }
@@ -102,7 +104,7 @@
 			if(!confirm("정말로 삭제하시겠습니까?")) return;
 			
 			let form = $("#form")
-			form.attr("action","<c:url value='/club/remove${searchItem.queryString}' />")
+			form.attr("action","<c:url value='/club/board/remove' />")
 			form.attr("method", "post")
 			form.submit()
 		})	

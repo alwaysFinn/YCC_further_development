@@ -2,7 +2,7 @@
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
  * 마지막 업데이트 : '23.03.01
- * 업데이트 내용 : 게시글 수정하기 기능 활성화
+ * 업데이트 내용 : 게시글 수정하기 기능 활성화, 게시글 삭제 기능 활성화
  * 기능 : 동아리 불러오기 기능 구현된 동아리 controller 
  */
 
@@ -213,7 +213,7 @@ public class ClubController
 		try {
 			clubDto.setClub_id(club_id);
 			clubDto.setClub_article_id(club_article_id);
-			List<ClubDto> cbdetail = clubService.BoardRead(clubDto);
+			List<ClubDto> cbdetail = clubService.clubBoardRead(clubDto);
 			m.addAttribute("cbdetail", cbdetail);
 		
 		}catch(Exception e) {
@@ -231,7 +231,7 @@ public class ClubController
 			
 			int club_article_id = Integer.parseInt(request.getParameter("article_id"));
 		
-			List<ClubDto> list = clubService.BoardModRead(club_article_id);
+			List<ClubDto> list = clubService.clubBoardModRead(club_article_id);
 			m.addAttribute("list", list);
 			System.out.println("list : " + list);
 			m.addAttribute("mode", "modi");
@@ -240,20 +240,13 @@ public class ClubController
 		}
 		
 		
-		return "club/clubboard";	//체크 필요
+		return "club/clubboard";
 	}
 	
 	
 	@PostMapping("club/board/edit") 
 	public String clubEdit(RedirectAttributes rattr, Authentication auth, int club_article_id, String club_article_title, String club_article_content, int club_id) {
 		try {
-
-				System.out.println("club_article_id : " + club_article_id);
-				System.out.println("club_article_title : " + club_article_title);
-				System.out.println("club_article_content : " + club_article_content);
-				System.out.println("club_id : " + club_id);
-				
-			
 				ClubDto clubDto = new ClubDto();
 				clubDto.setClub_article_title(club_article_title);
 				clubDto.setClub_article_content(club_article_content);
@@ -262,9 +255,8 @@ public class ClubController
 				
 				String user_id = auth.getName();
 				clubDto.setUser_id(user_id);
-				System.out.println("user_id : " + user_id);
 			
-			if(clubService.BoardModPost(clubDto) != 1) {
+			if(clubService.clubBoardModPost(clubDto) != 1) {
 				rattr.addFlashAttribute("msg", "MOD_FAIL");
 				System.out.println("글 업데이트 실패");
 				return "redirect:/club/board/edit?article_id=" + club_article_id;
@@ -305,7 +297,7 @@ public class ClubController
 			clubDto.setClub_article_title(club_article_title);
 			clubDto.setClub_article_content(club_article_content);
 			
-			if(clubService.BoardWrite(clubDto) != 1) {
+			if(clubService.clubBoardWrite(clubDto) != 1) {
 				System.out.println("글 작성 실패");
 				rattr.addFlashAttribute("msg", "WRITE_FAIL");
 				return "redirect:/club/board/write";
@@ -320,6 +312,28 @@ public class ClubController
 			System.out.println("글 등록 오류");
 			rattr.addFlashAttribute("msg", "WRITE_ERR");
 			return "redirect:/club/board/write";
+		}
+	}
+	
+	@PostMapping("club/board/remove")
+	public String clubDelete(RedirectAttributes rattr, int club_article_id, int club_id) {
+		try {
+			
+			if(clubService.clubBoardDelete(club_article_id) != 1) {
+				rattr.addFlashAttribute("msg", "REMOVE_FAIL");
+				System.out.println("글 삭제 실패");
+				return "redirect:/club/board/view?id=" + club_id + "&article_id=" + club_article_id;
+			}else {
+				rattr.addFlashAttribute("msg", "REMOVE_SUCCESS");
+				System.out.println("글 삭제 성공");
+				return "redirect:/club/detail?id=" + club_id;
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			rattr.addFlashAttribute("msg", "REMOVE_ERR");
+			System.out.println("글 삭제 중 예외 발생");
+			return "redirect:/club/board/view?id=" + club_id + "&article_id=" + club_article_id;
 		}
 	}
 	

@@ -2,7 +2,7 @@
  * 작성자 : alwaysFinn(김지호)
  * 최초 작성일 : '23.01.06
  * 마지막 업데이트 : '23.03.01
- * 업데이트 내용 : 동아리 게시글 수정하기 post 연동
+ * 업데이트 내용 : 동아리 게시글 수정하기 post 연동, 게시글 삭제 기능 연동
  * 기능 : 동아리 CRUD 기능 구현된 동아리 Dao file 
  */
 
@@ -41,6 +41,7 @@ public interface ClubDao {
 	int clubBoardCntPlus(int club_article_id)throws Exception; //클럽 게시판 조회수 +증가
 	List<ClubDto> clubBoardModRead(int club_article_id) throws Exception; //클럽 게시판 수ㅈㅇ용 상세보기
 	int clubBoardModUpdate(ClubDto clubDto) throws Exception; // 클럽 게시판 수정하기
+	int clubBoardDelete(int club_article_id) throws Exception; // 클럽 게시판 삭제하기
 	int clubSearchResultCnt(ClubSearchItem sc) throws Exception; // 검색 결과 갯수
 	List<ClubDto> clubSearchSelectPage(ClubSearchItem sc) throws Exception; // 검색 결과 페이지
 	
