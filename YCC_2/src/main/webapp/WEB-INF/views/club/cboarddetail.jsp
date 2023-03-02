@@ -2,7 +2,7 @@
  <!-- 작성자 : alwaysFinn(김지호)
  	  최초 작성일 : '23.01.06
  	  마지막 업데이트 : '23.03.01
- 	  업데이트 내용 : 수정 시 메세지 기능 추가
+ 	  업데이트 내용 : 수정 시 메세지 기능 추가, 게시글 삭제하기 기능 활성화
  	  기능 : 동아리 main페이지 view 파일 
  -->
 
@@ -55,7 +55,7 @@
 			  				<a id="listBtn" class="btn btn-outline-secondary" ><i class="bi bi-justify"></i>목록</a>	
 						</div>
 						<!-- 본인이 쓴 게시글에만 수정, 삭제 가능 -->
-						<!-- 세션 아이디와 boardDto에 저장되 아이디가 같으면 수정, 삭제 버튼 활성화 -->
+						<!-- 세션 아이디와 clubDto에 저장된 아이디가 같으면 수정 및 삭제 버튼 활성화 -->
 						<sec:authentication property="principal" var="pinfo"/>
 						<sec:authorize access="isAuthenticated()">
 							<c:if test="${pinfo.member.user_id eq cbdetail[0].user_id}">

@@ -7,8 +7,8 @@
 <!--
 	 작성자 : alwaysFinn(김지호)
 	 최초 작성일 : '23.01.06
-	 마지막 업데이트 : '23.01.31
-	 업데이트 내용 : 동아리 상세 페이지 접근 시 동아리 장 유무 확인하는 sql문 추가
+	 마지막 업데이트 : '23.03.01
+	 업데이트 내용 : 동아리 게시글 삭제하기 기능 추가
 	 기능 : 동아리 불러오기 기능 구현된 동아리 mapper로 DB와 연결됨
  --> 
 <mapper namespace="com.youngtvjobs.ycc.club.clubMapper" >
@@ -166,6 +166,12 @@
   		WHERE club_id = #{club_id}
   		AND club_article_id = #{club_article_id}
   	</select>
+  	
+  	<!-- 동아리 게시판 삭제하기 delete-->
+	<delete id="clubBoardDelete" parameterType="int">
+		delete from club_board
+		where club_article_id = #{club_article_id}	
+	</delete>
   	
   	<!-- 게시글 클릭 시 조회수 +1 -->
   	<update id="PlusViewCnt" parameterType="int">

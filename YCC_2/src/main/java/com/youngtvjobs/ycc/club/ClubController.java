@@ -215,6 +215,7 @@ public class ClubController
 			clubDto.setClub_article_id(club_article_id);
 			List<ClubDto> cbdetail = clubService.clubBoardRead(clubDto);
 			m.addAttribute("cbdetail", cbdetail);
+			System.out.println("cbdetail : " + cbdetail); // for test
 		
 		}catch(Exception e) {
 			System.out.println("상세 게시글 접근 중 Exception 발생");
@@ -277,9 +278,14 @@ public class ClubController
 	
 
 	@GetMapping("/club/board/write")
-	public String clubWrite(@RequestParam("id") int club_id, Model m) {
+	public String clubWrite(HttpServletRequest request, Model m) {
+		
+		int club_id = Integer.parseInt(request.getParameter("id"));
+		System.out.println(club_id);
+		
 		m.addAttribute("mode", "new");
 		m.addAttribute("club_id", club_id);
+		System.out.println(club_id);
 		
 		return "club/clubboard";
 	}

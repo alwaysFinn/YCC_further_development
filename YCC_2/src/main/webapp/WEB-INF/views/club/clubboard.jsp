@@ -2,7 +2,7 @@
  <!-- 작성자 : alwaysFinn(김지호)
  	  최초 작성일 : '23.01.12
  	  마지막 업데이트 : '23.03.01
- 	  업데이트 내용 : 게시글 수정하기 기능 활성화
+ 	  업데이트 내용 : 게시글 수정하기 기능 활성화, 게시글 삭제하기 기능 활성화
  	  기능 : 동아리 게시글 작성, 수정, 읽기 페이지
  -->
 
@@ -28,7 +28,7 @@
   		<!--container start-->
   		<form id="form" method="post" action="" >
   			<div class="container mt-5">
-			<input type="hidden" id="club_id" name="club_id" value="${club_id}">
+				<input type="hidden" id="club_id" name="club_id" value="${list[0].club_id}">
 	  			<c:choose>
 					<c:when test ="${mode eq 'new'}">
 						<h3 class="posttitle pt-3">글쓰기</h3>
@@ -80,8 +80,14 @@
 
   <script type="text/javascript">
   	$(document).ready(function() {
+  		
+  		let id = "${club_id}";
+  		
+  		console.log(id)
+  		console.log(typeof(id))
 
-		 //summernote
+  		
+  		//summernote
 		$('#contents').summernote({
 			placeholder:'내용을 입력하세요.',
 		    height: 600,
@@ -123,6 +129,8 @@
 		})
 		
 		$("#modiBtn").on("click", function() {
+			if(!confirm("수정된 글을 등록하시겠습니까?")) return;
+			
 			let form = $("#form");
 			form.attr("action", "<c:url value='/club/board/edit' />")
 			form.attr("method", "post")
